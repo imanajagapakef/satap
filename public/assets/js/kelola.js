@@ -16,7 +16,7 @@ let pendingPlace = null;
 let picker;
 
 const bizHtml = (name, address) =>
-  `<span class="biz-pin" aria-hidden="true">📍</span><div><strong>${esc(name)}</strong><div class="muted small">${esc(address)}</div></div>`;
+  `<span class="biz-pin" aria-hidden="true"><svg class="ic"><use href="/assets/icons.svg#map-pin"></use></svg></span><div><strong>${esc(name)}</strong><div class="muted small">${esc(address)}</div></div>`;
 
 // ---------- dashboard ----------
 function renderDash() {
@@ -124,7 +124,7 @@ $('#c-yes').addEventListener('click', async () => {
   try {
     card = await db.updateTarget({ code: session.code, pin: session.pin, place: pendingPlace });
     renderDash();
-    toast('Tujuan ulasan sudah diganti ✔');
+    toast('Tujuan ulasan sudah diganti');
   } catch (e) {
     $('#c-error').textContent = friendlyError(e);
   } finally {

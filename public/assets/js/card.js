@@ -12,16 +12,17 @@ let picker;
 
 // ---------- error page ----------
 const ERRORS = {
-  'no-code': { icon: '🧐', title: 'Alamat kartu tidak lengkap', text: 'Coba tap atau scan ulang kartunya.' },
-  'not-found': { icon: '🙈', title: 'Kartu tidak dikenali', text: 'Kode kartu ini tidak ada di sistem kami. Periksa lagi kartunya atau hubungi kami.' },
-  blocked: { icon: '⛔', title: 'Kartu dinonaktifkan', text: 'Kartu ini sedang tidak bisa dipakai. Silakan hubungi pemilik kartu atau kami.' },
-  network: { icon: '📶', title: 'Koneksi bermasalah', text: 'Cek internet Anda lalu coba lagi.', retry: true },
-  unknown: { icon: '😅', title: 'Ada kendala', text: 'Kami belum bisa membuka kartu ini. Coba lagi sebentar lagi.', retry: true },
+  'no-code': { icon: 'link-2-off', title: 'Alamat kartu tidak lengkap', text: 'Coba tap atau scan ulang kartunya.' },
+  'not-found': { icon: 'search-x', title: 'Kartu tidak dikenali', text: 'Kode kartu ini tidak ada di sistem kami. Periksa lagi kartunya atau hubungi kami.' },
+  blocked: { icon: 'ban', title: 'Kartu dinonaktifkan', text: 'Kartu ini sedang tidak bisa dipakai. Silakan hubungi pemilik kartu atau kami.' },
+  network: { icon: 'wifi-off', title: 'Koneksi bermasalah', text: 'Cek internet Anda lalu coba lagi.', retry: true },
+  unknown: { icon: 'circle-alert', title: 'Ada kendala', text: 'Kami belum bisa membuka kartu ini. Coba lagi sebentar lagi.', retry: true },
 };
 
 function showError(kind) {
   const e = ERRORS[kind] || ERRORS.unknown;
-  $('#err-icon').textContent = e.icon;
+  const useEl = $('#err-icon use');
+  if (useEl) useEl.setAttribute('href', `/assets/icons.svg#${e.icon}`);
   $('#err-title').textContent = e.title;
   $('#err-text').textContent = e.text;
   $('#err-retry').hidden = !e.retry;
@@ -70,7 +71,7 @@ function goStep(name) {
 }
 
 function bizHtml(p) {
-  return `<span class="biz-pin" aria-hidden="true">📍</span>
+  return `<span class="biz-pin" aria-hidden="true"><svg class="ic"><use href="/assets/icons.svg#map-pin"></use></svg></span>
           <div><strong>${esc(p.name || p.businessName)}</strong><div class="muted small">${esc(p.address)}</div></div>`;
 }
 

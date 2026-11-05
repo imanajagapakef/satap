@@ -41,7 +41,7 @@ export function mountPicker(root, { onSelect, label = 'Nama bisnis Anda' }) {
         (p, i) => `
       <li>
         <button type="button" class="result" data-i="${i}">
-          <span class="result-pin" aria-hidden="true">📍</span>
+          <span class="result-pin" aria-hidden="true"><svg class="ic"><use href="/assets/icons.svg#map-pin"></use></svg></span>
           <span class="result-text"><strong>${esc(p.name)}</strong><span class="muted small">${esc(p.address)}</span></span>
         </button>
       </li>`

@@ -129,14 +129,7 @@ h2 { font-weight: 800; }
 .mock-sub { font-size: 0.85rem; opacity: 0.85; }
 .mock-nfc { font-size: 22px; }
 .mock-tap { gap: 12px; margin-top: 18px; font-size: 0.92rem; color: var(--muted); }
-.mock-tap .ring {
-  width: 44px; height: 44px;
-  border-radius: 50%;
-  background: var(--soft);
-  color: var(--primary);
-  font-size: 0.62rem;
-  letter-spacing: 0.02em;
-}
+.mock-tap .stars { font-size: 16px; color: var(--primary); }
 
 /* ---------- strip angka ---------- */
 .strip {
@@ -182,16 +175,22 @@ h2 { font-weight: 800; }
 .compare ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 11px; font-size: 0.95rem; }
 .compare li { position: relative; padding-left: 26px; color: var(--muted); }
 .compare .before li::before {
-  content: '✕';
-  position: absolute; left: 0;
-  color: #A7B5AE; font-weight: 800;
+  content: '';
+  position: absolute; left: 0; top: 0.2em;
+  width: 1.05em; height: 1.05em;
+  background: #A7B5AE;
+  -webkit-mask: var(--ic-x) center / contain no-repeat;
+  mask: var(--ic-x) center / contain no-repeat;
 }
 .compare .after { background: #F3FAE7; border-color: #D8EFA8; }
 .compare .after li { color: var(--ink); }
 .compare .after li::before {
-  content: '✓';
-  position: absolute; left: 0;
-  color: var(--ok); font-weight: 800;
+  content: '';
+  position: absolute; left: 0; top: 0.2em;
+  width: 1.05em; height: 1.05em;
+  background: var(--ok);
+  -webkit-mask: var(--ic-check) center / contain no-repeat;
+  mask: var(--ic-check) center / contain no-repeat;
 }
 
 /* ---------- janji / integritas ---------- */

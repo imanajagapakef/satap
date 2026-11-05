@@ -94,7 +94,7 @@
     @keyframes u-fill{to{width:100%}}
 
     /* Selesai & error */
-    .big-emoji{font-size:2.6rem;line-height:1}
+    .big-emoji{font-size:2.6rem;line-height:1;color:var(--muted)}
     .check{display:grid;place-items:center;width:56px;height:56px;margin:0 auto;border-radius:50%;background:#EAF6EC;color:var(--ok);font-size:1.7rem;font-weight:800}
     [data-step="done"] h1{color:var(--ink)}
     #done-name{color:var(--ink)}
@@ -158,7 +158,7 @@
         <p class="muted">Cari nama toko seperti yang tampil di Google Maps.</p>
       </div>
       <div id="picker"></div>
-      <button type="button" class="btn btn-text btn-block" id="search-back">← Kembali</button>
+      <button type="button" class="btn btn-text btn-block" id="search-back"><svg class="ic" aria-hidden="true"><use href="/assets/icons.svg#arrow-left"></use></svg>Kembali</button>
     </div>
 
     <div data-step="confirm" hidden class="card stack">
@@ -173,7 +173,7 @@
     </div>
 
     <div data-step="done" hidden class="card stack center">
-      <div class="check" aria-hidden="true">✓</div>
+      <div class="check" aria-hidden="true"><svg class="ic"><use href="/assets/icons.svg#check"></use></svg></div>
       <h1 tabindex="-1">Kartu sudah aktif</h1>
       <p class="muted">Kartu ini sekarang mengarah ke ulasan <strong id="done-name"></strong>.</p>
       <a id="done-test" class="btn btn-primary btn-block" target="_blank" rel="noopener" href="#">Coba sekarang</a>
@@ -184,7 +184,7 @@
 
   <!-- 4. Error -->
   <section data-view="error" hidden class="center stack">
-    <div class="big-emoji" id="err-icon" aria-hidden="true">🙈</div>
+    <svg class="ic big-emoji" id="err-icon" aria-hidden="true"><use href="/assets/icons.svg#circle-alert"></use></svg>
     <h1 id="err-title" tabindex="-1"></h1>
     <p class="muted" id="err-text"></p>
     <button id="err-retry" type="button" class="btn btn-primary btn-block" hidden>Coba lagi</button>

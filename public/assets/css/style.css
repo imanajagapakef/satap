@@ -18,6 +18,9 @@
   --danger: #B3261E;
   --danger-bg: #FBE3E1;
   --radius: 18px;
+  /* Tanda centang & silang sebagai mask SVG (bukan glyph font) */
+  --ic-check: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E");
+  --ic-x: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 6 6 18'/%3E%3Cpath d='m6 6 12 12'/%3E%3C/svg%3E");
 }
 
 * { box-sizing: border-box; }
@@ -67,6 +70,11 @@ p { margin: 0 0 10px; }
 .small { font-size: 14px; }
 .eyebrow { font-size: 14px; font-weight: 700; color: var(--muted); margin-bottom: 4px; }
 .big-emoji { font-size: 56px; line-height: 1; }
+
+/* Ikon SVG — sprite di /assets/icons.svg. Ukurannya ikut font-size induknya. */
+.ic { display: inline-block; width: 1em; height: 1em; flex: 0 0 auto; vertical-align: -0.14em; }
+.stars { display: inline-flex; align-items: center; gap: 2px; color: var(--primary); }
+.stars .ic { width: 1em; height: 1em; vertical-align: 0; }
 .label { display: block; font-weight: 800; margin-bottom: 6px; }
 .hint { font-size: 14px; color: var(--muted); margin: 8px 0 0; }
 .note { background: var(--warn-bg); color: var(--warn); border-radius: 14px; padding: 12px 14px; font-size: 15px; margin: 0; }
@@ -226,7 +234,12 @@ td.actions .btn + .btn { margin-left: 6px; }
 .plan-price small { display: block; font-family: 'Nunito', system-ui, sans-serif; font-size: 14px; color: var(--muted); font-weight: 700; }
 .plan ul { list-style: none; padding: 0; margin: 16px 0 20px; display: grid; gap: 9px; font-size: 15px; }
 .plan li { display: flex; gap: 9px; align-items: flex-start; }
-.plan li::before { content: '✓'; color: var(--ok); font-weight: 800; }
+.plan li::before {
+  content: ''; flex: 0 0 auto; width: 1.05em; height: 1.05em; margin-top: 0.16em;
+  background: var(--ok);
+  -webkit-mask: var(--ic-check) center / contain no-repeat;
+  mask: var(--ic-check) center / contain no-repeat;
+}
 .plan .btn { margin-top: auto; }
 .pricing-single { grid-template-columns: minmax(0, 520px); justify-content: center; }
 
