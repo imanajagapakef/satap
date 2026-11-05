@@ -167,14 +167,63 @@ h2 { font-weight: 800; }
   margin-bottom: 8px;
 }
 
-/* ---------- perbandingan ---------- */
-.compare { display: grid; gap: 14px; margin-top: 22px; }
-@media (min-width: 760px) { .compare { grid-template-columns: 1fr 1fr; } }
-.compare .col { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; }
-.compare h3 { margin: 0 0 12px; font-size: 1rem; }
-.compare ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 11px; font-size: 0.95rem; }
-.compare li { position: relative; padding-left: 29px; color: var(--muted); }
-.compare .before li::before {
+/* ---------- kartu bolak-balik: cara biasa vs Satap ---------- */
+.flip {
+  display: block;
+  width: 100%;
+  max-width: 620px;
+  margin: 26px auto 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  perspective: 1400px;
+  -webkit-tap-highlight-color: transparent;
+  border-radius: var(--radius);
+}
+.flip:focus-visible { outline: 3px solid rgba(14, 107, 77, 0.45); outline-offset: 4px; }
+
+.flip-inner {
+  display: grid;
+  transform-style: preserve-3d;
+  transition: transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.flip.is-flipped .flip-inner { transform: rotateY(180deg); }
+
+.flip-face {
+  grid-area: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  padding: 24px 24px 22px;
+  border-radius: var(--radius);
+  border: 1.5px solid var(--line);
+  background: var(--surface);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.flip-back {
+  transform: rotateY(180deg);
+  background: #F3FAE7;
+  border-color: #D8EFA8;
+}
+
+.flip-kicker {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 7px;
+}
+.flip-back .flip-kicker { color: var(--primary); }
+
+.flip-face h3 { margin: 0 0 15px; font-size: 1.12rem; }
+.flip-face ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 11px; font-size: 0.95rem; }
+.flip-face li { position: relative; padding-left: 29px; color: var(--muted); }
+.flip-back li { color: var(--ink); }
+
+.flip-face li::before {
   content: '';
   position: absolute; left: 0; top: 0.15em;
   width: 1.15em; height: 1.15em;
@@ -182,15 +231,25 @@ h2 { font-weight: 800; }
   -webkit-mask: var(--ic-x) center / contain no-repeat;
   mask: var(--ic-x) center / contain no-repeat;
 }
-.compare .after { background: #F3FAE7; border-color: #D8EFA8; }
-.compare .after li { color: var(--ink); }
-.compare .after li::before {
-  content: '';
-  position: absolute; left: 0; top: 0.15em;
-  width: 1.15em; height: 1.15em;
+.flip-back li::before {
   background: var(--ok);
   -webkit-mask: var(--ic-check) center / contain no-repeat;
   mask: var(--ic-check) center / contain no-repeat;
+}
+
+.flip-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 18px;
+  color: var(--primary);
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+.flip-hint .ic { width: 15px; height: 15px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .flip-inner { transition: none; }
 }
 
 /* ---------- contoh penggunaan ---------- */

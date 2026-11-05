@@ -150,22 +150,34 @@
     <span class="eyebrow">Kenapa Satap</span>
     <h2>Minta ulasan jadi semudah menempel HP.</h2>
     <p class="section-lead">Ulasan Google bikin calon pelanggan percaya. Masalahnya, hampir tidak ada yang mau repot mencari nama toko Anda di Maps lalu menulisnya.</p>
-    <div class="compare">
-      <div class="col before">
-        <h3>Cara biasa</h3>
-        <ul>
-          <li>Meminta pelanggan satu per satu</li>
-          <li>Pelanggan harus mencari nama toko di Google Maps</li>
-          <li>Banyak yang lupa atau menunda</li>
-        </ul>
-      </div>
-      <div class="col after">
-        <h3>Dengan Satap</h3>
-        <ul>
-          <li>Kartu di meja kasir, tidak perlu meminta berkali-kali</li>
-          <li>Satu tap, formulir ulasan toko Anda langsung terbuka</li>
-          <li>QR code untuk HP tanpa NFC</li>
-        </ul>
+    <div class="flip" id="flip" role="button" tabindex="0" aria-pressed="false" aria-label="Bandingkan cara biasa dengan cara Satap">
+      <div class="flip-inner">
+        <div class="flip-face flip-front" id="flip-front">
+          <span class="flip-kicker">Cara biasa</span>
+          <h3>Minta ulasan tanpa kartu</h3>
+          <ul>
+            <li>Meminta pelanggan satu per satu</li>
+            <li>Pelanggan harus mencari nama toko di Google Maps</li>
+            <li>Banyak yang lupa atau menunda</li>
+          </ul>
+          <span class="flip-hint">
+            <svg class="ic" aria-hidden="true"><use href="/assets/icons.svg#refresh-cw"></use></svg>
+            Ketuk untuk lihat dengan Satap
+          </span>
+        </div>
+        <div class="flip-face flip-back" id="flip-back" aria-hidden="true">
+          <span class="flip-kicker">Dengan Satap</span>
+          <h3>Satu tap di meja kasir</h3>
+          <ul>
+            <li>Tidak perlu meminta berkali-kali</li>
+            <li>Formulir ulasan toko Anda langsung terbuka</li>
+            <li>Ada QR untuk HP yang tidak punya NFC</li>
+          </ul>
+          <span class="flip-hint">
+            <svg class="ic" aria-hidden="true"><use href="/assets/icons.svg#refresh-cw"></use></svg>
+            Ketuk untuk kembali
+          </span>
+        </div>
       </div>
     </div>
   </section>
@@ -321,6 +333,23 @@
   d.forEach(function(el){ el.addEventListener('toggle', function(){
     if (el.open) d.forEach(function(o){ if (o !== el) o.open = false; });
   }); });
+
+  /* Kartu bolak-balik: cara biasa <-> Satap */
+  var flip = document.getElementById('flip');
+  if (flip) {
+    var front = document.getElementById('flip-front');
+    var back = document.getElementById('flip-back');
+    var putar = function () {
+      var on = flip.classList.toggle('is-flipped');
+      flip.setAttribute('aria-pressed', on ? 'true' : 'false');
+      if (front) front.setAttribute('aria-hidden', on ? 'true' : 'false');
+      if (back) back.setAttribute('aria-hidden', on ? 'false' : 'true');
+    };
+    flip.addEventListener('click', putar);
+    flip.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') { e.preventDefault(); putar(); }
+    });
+  }
 })();
 </script>
 </body>
