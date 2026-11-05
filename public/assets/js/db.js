@@ -184,6 +184,22 @@ const demo = {
     write(s);
     return out;
   },
+  async adminResetPins({ codes = null, batch = null }) {
+    const s = await read();
+    const list = Object.values(s.cards).filter((c) =>
+      codes && codes.length ? codes.includes(c.code) : batch ? c.batch === batch : false
+    );
+    if (!list.length) throw new SatapError('not-found');
+    const out = [];
+    for (const c of list) {
+      const pin = randomPin();
+      c.salt = randomSalt();
+      c.pinHash = await sha256(c.salt + pin);
+      out.push({ code: c.code, pin });
+    }
+    write(s);
+    return out;
+  },
   async adminSetBlocked(code, blocked) {
     const s = await read();
     const c = need(s, code);
@@ -290,6 +306,11 @@ const real = {
   },
   async adminGenerateBatch({ count, label }) {
     return await rpc('generate_batch', { p_count: Math.floor(Number(count)), p_label: label || '' });
+  },
+  async adminResetPins({ codes = null, batch = null }) {
+    const data = await rpc('reset_card_pins', { p_codes: codes, p_batch: batch });
+    if (!data || data.ok !== true) throw new UlasinError((data && data.reason) || 'unknown');
+    return data.cards || [];
   },
   adminSetBlocked: async (code, blocked) => rpc('set_card_blocked', { p_code: code, p_blocked: !!blocked }),
 };

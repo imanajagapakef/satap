@@ -80,6 +80,27 @@
     </div>
 
     <div class="card stack">
+      <h2>Reset PIN</h2>
+      <p class="muted" style="margin:0">
+        PIN hanya disimpan sebagai hash, jadi kalau hilang harus direset.
+        <strong>PIN lama langsung tidak berlaku</strong>, termasuk yang sudah dicetak.
+      </p>
+      <form id="reset-form" novalidate class="row form-row">
+        <div class="grow">
+          <label class="label" for="r-batch">Pilih batch</label>
+          <select id="r-batch" class="input"></select>
+        </div>
+        <button id="r-btn" class="btn btn-primary" type="submit">Reset PIN batch</button>
+      </form>
+      <p class="field-error" id="r-error" role="alert"></p>
+      <div id="r-result" class="note stack" hidden>
+        <strong id="r-result-text"></strong>
+        <p style="margin:0">Unduh CSV sekarang. PIN baru tidak bisa dilihat lagi setelah halaman ini ditutup.</p>
+        <button id="r-download" type="button" class="btn btn-primary">Unduh CSV (kode, URL, PIN)</button>
+      </div>
+    </div>
+
+    <div class="card stack">
       <div class="row between">
         <h2>Daftar kartu</h2>
         <button id="a-export" type="button" class="btn btn-ghost btn-sm">Ekspor CSV</button>

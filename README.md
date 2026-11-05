@@ -102,6 +102,9 @@ Semua tulis & cek PIN lewat **RPC Postgres `security definer`**. Client tidak pe
    select id from auth.users where email = 'email-anda@contoh.com';
    ```
 5. Buka `/admin`, buat batch, **unduh CSV (kode, URL, PIN)** — PIN hanya tampil sekali.
+   Kalau CSV-nya hilang, pakai bagian **Reset PIN** di halaman admin (per batch atau per kartu):
+   PIN baru dibuat dan ditampilkan sekali lagi, PIN lama langsung tidak berlaku.
+   > Buka CSV-nya pakai Notepad / import-as-text, karena PIN bisa mulai dengan angka 0.
 6. **Key untuk verifikasi server**: `places_lookup()` memanggil Google dari dalam Postgres,
    jadi butuh key yang **tidak** dibatasi HTTP referrer. Isi lewat SQL Editor:
    ```sql

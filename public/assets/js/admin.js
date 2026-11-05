@@ -57,6 +57,7 @@ function renderRows() {
         <td class="small">${esc(c.batch || '—')}<div class="muted">${fmtDate(c.createdAt)}</div></td>
         <td class="actions">
           <button class="btn btn-sm btn-ghost" data-act="copy" data-code="${esc(c.code)}">Salin URL</button>
+          <button class="btn btn-sm btn-ghost" data-act="reset" data-code="${esc(c.code)}">Reset PIN</button>
           <button class="btn btn-sm btn-ghost" data-act="block" data-code="${esc(c.code)}">${c.status === 'blocked' ? 'Buka blokir' : 'Blokir'}</button>
         </td>
       </tr>`;
@@ -64,10 +65,22 @@ function renderRows() {
     .join('');
 }
 
+function renderBatches() {
+  const sel = $('#r-batch');
+  if (!sel) return;
+  const prev = sel.value;
+  const labels = [...new Set(cards.map((c) => c.batch).filter(Boolean))].sort();
+  sel.innerHTML = labels.length
+    ? labels.map((b) => `<option value="${esc(b)}">${esc(b)}</option>`).join('')
+    : '<option value="">(belum ada batch)</option>';
+  if (labels.includes(prev)) sel.value = prev;
+}
+
 async function refresh() {
   cards = await db.adminListCards();
   renderStats();
   renderRows();
+  renderBatches();
 }
 
 $('#f-q').addEventListener('input', renderRows);
@@ -79,6 +92,22 @@ $('#a-rows').addEventListener('click', async (e) => {
   const code = btn.dataset.code;
   if (btn.dataset.act === 'copy') {
     toast((await copyText(cardUrl(code))) ? 'URL kartu disalin' : 'Gagal menyalin');
+    return;
+  }
+  if (btn.dataset.act === 'reset') {
+    if (!confirm(`Reset PIN kartu ${code}?\n\nPIN lama langsung tidak berlaku.`)) return;
+    busy(btn, true, '...');
+    try {
+      const made = await db.adminResetPins({ codes: [code] });
+      const pin = (made[0] && made[0].pin) || '—';
+      showPins($('#r-result'), $('#r-result-text'), code, made, `PIN baru untuk ${code}: ${pin}`);
+      toast('PIN direset');
+      $('#r-result').scrollIntoView({ block: 'center' });
+    } catch (e2) {
+      toast(friendlyError(e2), 'err');
+    } finally {
+      busy(btn, false);
+    }
     return;
   }
   const card = cards.find((c) => c.code === code);
@@ -116,9 +145,7 @@ $('#gen-form').addEventListener('submit', async (e) => {
   busy(btn, true, 'Membuat…');
   try {
     const made = await db.adminGenerateBatch({ count, label });
-    lastBatch = { label, rows: made.map((m) => ({ code: m.code, url: cardUrl(m.code), pin: m.pin })) };
-    $('#g-result-text').textContent = `${made.length} kartu berhasil dibuat.`;
-    $('#g-result').hidden = false;
+    showPins($('#g-result'), $('#g-result-text'), label, made, `${made.length} kartu berhasil dibuat.`);
     await refresh();
   } catch (e2) {
     err.textContent = friendlyError(e2);
@@ -127,10 +154,45 @@ $('#gen-form').addEventListener('submit', async (e) => {
   }
 });
 
-$('#g-download').addEventListener('click', () => {
+// Simpan hasil (untuk CSV) dan tampilkan di kotak hasil.
+function showPins(boxEl, textEl, label, made, text) {
+  lastBatch = { label, rows: made.map((m) => ({ code: m.code, url: cardUrl(m.code), pin: m.pin })) };
+  textEl.textContent = text;
+  boxEl.hidden = false;
+}
+
+function downloadLastBatch() {
   if (!lastBatch) return;
   const slug = (lastBatch.label || 'batch').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'batch';
   download(`satap-${slug}-${stamp()}.csv`, ['kode', 'url', 'pin'], lastBatch.rows.map((r) => [r.code, r.url, r.pin]));
+}
+
+$('#g-download').addEventListener('click', downloadLastBatch);
+$('#r-download').addEventListener('click', downloadLastBatch);
+
+// ---------- reset PIN ----------
+$('#reset-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const err = $('#r-error');
+  err.textContent = '';
+  $('#r-result').hidden = true;
+
+  const batch = $('#r-batch').value;
+  if (!batch) { err.textContent = 'Belum ada batch untuk direset.'; return; }
+  if (!confirm(`Reset PIN SEMUA kartu di batch "${batch}"?\n\nPIN lama langsung tidak berlaku, termasuk yang sudah dicetak.`)) return;
+
+  const btn = $('#r-btn');
+  busy(btn, true, 'Mereset...');
+  try {
+    const made = await db.adminResetPins({ batch });
+    showPins($('#r-result'), $('#r-result-text'), batch, made, `${made.length} PIN berhasil direset (batch "${batch}").`);
+    toast(`${made.length} PIN direset`);
+    await refresh();
+  } catch (e2) {
+    err.textContent = friendlyError(e2);
+  } finally {
+    busy(btn, false);
+  }
 });
 
 // ---------- login ----------
