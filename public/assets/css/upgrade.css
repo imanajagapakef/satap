@@ -253,10 +253,10 @@ h2 { font-weight: 800; }
 .usecases { display: grid; gap: 12px; margin-top: 22px; }
 @media (min-width: 700px) { .usecases { grid-template-columns: 1fr 1fr; } }
 .usecase {
-  padding: 16px 18px;
+  padding: 18px 20px;
   background: var(--surface);
   border: 1px solid var(--line);
-  border-radius: var(--radius);
+  border-radius: 18px;
 }
 .usecase b { display: block; font-size: 15px; margin-bottom: 3px; }
 .usecase span { color: var(--muted); font-size: 14px; }
@@ -271,10 +271,10 @@ h2 { font-weight: 800; }
   display: flex;
   gap: 14px;
   align-items: flex-start;
-  padding: 20px 22px;
+  padding: 22px 24px;
   background: var(--surface);
   border: 1px solid var(--line);
-  border-radius: var(--radius);
+  border-radius: 18px;
 }
 .promise .ico { font-size: 1.55rem; line-height: 1.3; }
 .promise p { margin: 0; color: var(--muted); font-size: 0.95rem; }
@@ -304,13 +304,44 @@ h2 { font-weight: 800; }
 .order b { display: block; margin-bottom: 2px; }
 .order span { color: var(--muted); font-size: 0.9rem; }
 
-/* ---------- fitur / kartu ---------- */
-.feature { box-shadow: none; }
-.feature .num {
-  width: 30px; height: 30px;
-  background: var(--ink);
-  font-size: 0.85rem;
+/* ---------- kartu section: langkah & fitur ----------
+   Kartu putih, sudut besar, border tipis, bayangan lembut.
+   Langkah pakai lencana angka bulat gelap; fitur pakai kotak ikon mint. */
+.steps3 { gap: 20px; }
+.cardgrid { gap: 20px; }
+
+.feature {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  padding: 28px 26px;
+  box-shadow: 0 1px 2px rgba(0, 32, 24, 0.04), 0 20px 34px -26px rgba(0, 32, 24, 0.3);
 }
+
+.feature .num {
+  width: 44px; height: 44px;
+  margin-bottom: 18px;
+  background: var(--ink);
+  color: #fff;
+  font-size: 1.05rem;
+}
+
+.feature .ico {
+  width: 46px; height: 46px;
+  margin-bottom: 18px;
+  border-radius: 14px;
+  background: var(--soft);
+  color: var(--primary);
+  display: inline-grid;
+  place-items: center;
+}
+.feature .ico .ic { width: 22px; height: 22px; }
+
+.feature h3 { margin: 0 0 8px; font-size: 1.1rem; line-height: 1.35; }
+.feature p { margin: 0; font-size: 0.95rem; line-height: 1.6; }
 
 /* ---------- harga ---------- */
 .plan { box-shadow: var(--shadow); }
