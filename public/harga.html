@@ -3,40 +3,59 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#FFF6E9">
-  <title>Harga · Ulasin</title>
-  <meta name="description" content="Kartu NFC Ulasin — Rp50.000 sekali bayar, tanpa langganan. Tap kartunya, formulir ulasan Google toko Anda langsung terbuka.">
+  <meta name="theme-color" content="#FAF7F2">
+  <title>Harga · Satap</title>
+  <meta name="description" content="Kartu NFC Satap — Rp50.000 sekali bayar, tanpa langganan. Tap kartunya, formulir ulasan Google toko Anda langsung terbuka.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="id_ID">
+  <meta property="og:site_name" content="Satap">
+  <meta property="og:title" content="Harga Kartu Satap · Rp50.000 sekali bayar">
+  <meta property="og:description" content="Satu kartu NFC + QR untuk meja kasir. Tanpa langganan, tanpa biaya per ulasan.">
   <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/upgrade.css">
+
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"Product",
+    "name":"Kartu Satap (NFC + QR)",
+    "description":"Satu kartu NFC dengan QR code untuk satu meja kasir. Membuka formulir ulasan Google toko Anda dengan satu tap.",
+    "brand":{"@type":"Brand","name":"Satap"},
+    "offers":{"@type":"Offer","price":"50000","priceCurrency":"IDR"}
+  }
+  </script>
 </head>
 <body>
 <main class="shell shell-wide">
 
-  <header class="topbar">
-    <a class="brand" href="/"><span class="logo" aria-hidden="true">★</span><span class="wordmark">Ulasin</span></a>
+  <header class="topbar" id="topbar">
+    <a class="brand" href="/"><span class="logo" aria-hidden="true"><img src="/assets/logo.png" alt="" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()"><span class="logo-mark">★</span></span><span class="wordmark">Satap</span></a>
     <nav class="nav" aria-label="Navigasi utama">
       <a href="/">Beranda</a>
       <a href="/#cara">Cara pakai</a>
-      <a href="/harga.html">Harga</a>
+      <a href="/harga.html" aria-current="page">Harga</a>
       <a href="/kelola.html">Kelola kartu</a>
+      <a class="nav-cta" data-wa target="_blank" rel="noopener" href="#">Pesan</a>
     </nav>
   </header>
 
-  <section class="section" style="padding-top:26px">
-    <h2>Satu kartu, Rp50.000</h2>
-    <p class="section-lead">
+  <section class="section" style="padding-top:48px;text-align:center">
+    <span class="eyebrow">Harga</span>
+    <h2 style="font-size:clamp(2rem,6vw,3rem)">Satu kartu, Rp50.000.</h2>
+    <p class="section-lead" style="margin-left:auto;margin-right:auto">
       Harga sekali bayar. Tidak ada langganan bulanan, tidak ada biaya per ulasan.
       Kartunya bisa dipakai terus walau toko Anda ganti nama atau pindah cabang.
     </p>
   </section>
 
   <!-- SATU PAKET -->
-  <section class="pricing pricing-single" style="margin-top:22px">
+  <section class="pricing pricing-single" style="margin-top:28px">
     <div class="plan is-pop">
-      <span class="plan-badge">Kartu Ulasin</span>
+      <span class="plan-badge">Kartu Satap</span>
       <h3>Satu kartu NFC + QR</h3>
       <p class="plan-for">Untuk satu meja kasir</p>
       <div class="plan-price">Rp50.000<small>sekali bayar · tanpa langganan</small></div>
@@ -52,10 +71,22 @@
     </div>
   </section>
 
+  <!-- CARA PESAN -->
+  <section class="section">
+    <span class="eyebrow">Cara pesan</span>
+    <h2>Pesan lewat chat, tanpa ribet.</h2>
+    <ol class="order">
+      <li><b>Chat kami di WhatsApp</b><span>Klik tombol pesan dan sebutkan nama usaha Anda.</span></li>
+      <li><b>Konfirmasi pesanan</b><span>Kami konfirmasi jumlah kartu dan alamat pengiriman lewat chat.</span></li>
+      <li><b>Aktifkan dan pakai</b><span>Kartu tiba, aktivasi lewat HP, lalu letakkan di meja kasir.</span></li>
+    </ol>
+  </section>
+
   <!-- SUDAH TERMASUK -->
   <section class="section">
-    <h2>Sudah termasuk</h2>
-    <div class="cardgrid cardgrid-2" style="margin-top:18px">
+    <span class="eyebrow">Sudah termasuk</span>
+    <h2>Yang Anda dapatkan.</h2>
+    <div class="cardgrid cardgrid-2">
       <div class="feature">
         <span class="ico" aria-hidden="true">🔓</span>
         <h3>Tanpa langganan</h3>
@@ -79,10 +110,19 @@
     </div>
   </section>
 
+  <!-- INTEGRITAS -->
+  <section class="section">
+    <div class="promise">
+      <span class="ico" aria-hidden="true">🤝</span>
+      <p><strong>Ulasan tetap asli dari pelanggan.</strong> Satap hanya mempermudah jalur menuju formulir ulasan Google. Kami tidak menjual atau membuat ulasan, dan semua pelanggan diarahkan ke formulir yang sama.</p>
+    </div>
+  </section>
+
   <!-- FAQ -->
   <section class="section">
+    <span class="eyebrow">FAQ</span>
     <h2>Seputar pembelian</h2>
-    <div class="faq" style="margin-top:18px">
+    <div class="faq">
       <details>
         <summary>Bagaimana cara memesannya?</summary>
         <p>Klik tombol WhatsApp di atas. Nanti kami konfirmasi jumlah kartu dan alamat pengiriman lewat chat.</p>
@@ -102,9 +142,9 @@
     </div>
   </section>
 
-  <section class="cta-band">
+  <section class="cta-band" id="pesan">
     <h2>Mau pesan kartunya?</h2>
-    <p class="muted" style="max-width:52ch;margin:6px auto 0">
+    <p class="muted" style="max-width:52ch;margin:10px auto 0">
       Ceritakan nama usaha Anda, kami bantu atur kartunya sampai jalan.
     </p>
     <div class="row">
@@ -114,7 +154,7 @@
   </section>
 
   <footer class="footer">
-    <span>© Ulasin — kartu ulasan Google untuk UMKM.</span>
+    <span>© Satap — kartu ulasan Google untuk UMKM.</span>
     <nav>
       <a href="/">Beranda</a>
       <a href="/kelola.html">Kelola kartu</a>
@@ -123,6 +163,25 @@
   </footer>
 
 </main>
+
+<div class="sticky-cta" id="sticky-cta">
+  <a class="btn btn-primary" data-wa target="_blank" rel="noopener" href="#">Pesan kartu · Rp50.000</a>
+</div>
+
 <script type="module" src="/assets/js/landing.js"></script>
+<script>
+(function(){
+  var top = document.getElementById('topbar');
+  if (top) addEventListener('scroll', function(){ top.classList.toggle('is-scrolled', scrollY > 8); }, {passive:true});
+  var sticky = document.getElementById('sticky-cta'), band = document.getElementById('pesan');
+  if (sticky && band && 'IntersectionObserver' in window){
+    new IntersectionObserver(function(e){ sticky.classList.toggle('is-hidden', e[0].isIntersecting); },{threshold:.15}).observe(band);
+  }
+  var d = document.querySelectorAll('.faq details');
+  d.forEach(function(el){ el.addEventListener('toggle', function(){
+    if (el.open) d.forEach(function(o){ if (o !== el) o.open = false; });
+  }); });
+})();
+</script>
 </body>
 </html>

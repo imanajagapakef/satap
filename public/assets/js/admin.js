@@ -97,7 +97,7 @@ $('#a-rows').addEventListener('click', async (e) => {
 
 $('#a-export').addEventListener('click', () => {
   download(
-    `ulasin-kartu-${stamp()}.csv`,
+    `satap-kartu-${stamp()}.csv`,
     ['kode', 'url', 'status', 'bisnis', 'alamat', 'scan', 'batch', 'dibuat'],
     filtered().map((c) => [c.code, cardUrl(c.code), c.status, c.businessName, c.address, c.scanCount, c.batch, new Date(c.createdAt).toISOString()])
   );
@@ -130,7 +130,7 @@ $('#gen-form').addEventListener('submit', async (e) => {
 $('#g-download').addEventListener('click', () => {
   if (!lastBatch) return;
   const slug = (lastBatch.label || 'batch').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'batch';
-  download(`ulasin-${slug}-${stamp()}.csv`, ['kode', 'url', 'pin'], lastBatch.rows.map((r) => [r.code, r.url, r.pin]));
+  download(`satap-${slug}-${stamp()}.csv`, ['kode', 'url', 'pin'], lastBatch.rows.map((r) => [r.code, r.url, r.pin]));
 });
 
 // ---------- login ----------

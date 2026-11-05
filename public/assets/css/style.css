@@ -1,4 +1,4 @@
-/* Ulasin — tema hangat & ramah UMKM. Mobile-first. */
+/* Satap — tema hangat & ramah UMKM. Mobile-first. */
 :root {
   --bg: #FFF6E9;
   --surface: #FFFFFF;
@@ -51,6 +51,12 @@ body {
   background: var(--primary); color: #fff; font-size: 20px; box-shadow: 0 3px 0 var(--primary-dark);
 }
 .wordmark { font-family: 'Fraunces', Georgia, serif; font-weight: 700; font-size: 25px; letter-spacing: -0.3px; }
+
+/* Logo gambar (public/assets/logo.png). Kalau belum ada, ★ tetap tampil. */
+.logo { position: relative; overflow: hidden; }
+.logo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; display: block; }
+.logo.has-img { background: transparent; box-shadow: none; }
+.logo.has-img .logo-mark { display: none; }
 
 /* ---------- type ---------- */
 h1 { font-family: 'Fraunces', Georgia, serif; font-size: 28px; line-height: 1.2; margin: 0 0 8px; }

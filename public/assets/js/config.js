@@ -1,5 +1,5 @@
 // ============================================================
-//  ULASIN — KONFIGURASI
+//  SATAP — KONFIGURASI
 //  Semua yang perlu Anda isi ada di file ini.
 // ============================================================
 
@@ -8,7 +8,7 @@ export const CONFIG = {
   // false = pakai Supabase + Google Places sungguhan
   DEMO_MODE: false,
 
-  BRAND: { name: 'Ulasin', tagline: 'Tap kartunya, ulasan masuk.' },
+  BRAND: { name: 'Satap', tagline: 'Tap kartunya, ulasan masuk.' },
 
   // Nomor WhatsApp bantuan, format internasional tanpa "+" (contoh: 6281234567890)
   SUPPORT_WA: '6289637873386',

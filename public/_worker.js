@@ -1,5 +1,5 @@
 // ============================================================
-//  Ulasin — Cloudflare Pages Function (advanced mode)
+//  Satap — Cloudflare Pages Function (advanced mode)
 //
 //  /c/KODE untuk kartu AKTIF -> dibalas 302 langsung ke formulir
 //  ulasan Google, tanpa memuat JS apa pun di HP pelanggan.

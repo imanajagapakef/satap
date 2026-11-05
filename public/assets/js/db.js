@@ -11,7 +11,7 @@
 import { CONFIG, isPlaceholder } from './config.js';
 import { reviewUrlFor } from './places.js';
 
-export class UlasinError extends Error {
+export class SatapError extends Error {
   constructor(code, message) {
     super(message || code);
     this.code = code;
@@ -104,12 +104,12 @@ function write(s) {
 }
 function need(s, code) {
   const c = okCode(code) ? s.cards[code] : null;
-  if (!c) throw new UlasinError('not-found');
+  if (!c) throw new SatapError('not-found');
   return c;
 }
 async function checkPin(c, pin) {
-  if (c.status === 'blocked') throw new UlasinError('blocked');
-  if ((await sha256(c.salt + String(pin))) !== c.pinHash) throw new UlasinError('wrong-pin');
+  if (c.status === 'blocked') throw new SatapError('blocked');
+  if ((await sha256(c.salt + String(pin))) !== c.pinHash) throw new SatapError('wrong-pin');
 }
 
 const demo = {
@@ -139,8 +139,8 @@ const demo = {
     const s = await read();
     const c = need(s, code);
     await checkPin(c, pin);
-    if (c.status === 'active') throw new UlasinError('already-active');
-    if (!okPlace(place)) throw new UlasinError('invalid');
+    if (c.status === 'active') throw new SatapError('already-active');
+    if (!okPlace(place)) throw new SatapError('invalid');
     Object.assign(c, placeFields(place), { status: 'active', activatedAt: Date.now() });
     write(s);
     return ownerView(c);
@@ -150,7 +150,7 @@ const demo = {
     const s = await read();
     const c = need(s, code);
     await checkPin(c, pin);
-    if (c.status !== 'active' || !okPlace(place)) throw new UlasinError('invalid');
+    if (c.status !== 'active' || !okPlace(place)) throw new SatapError('invalid');
     Object.assign(c, placeFields(place));
     write(s);
     return ownerView(c);
@@ -159,7 +159,7 @@ const demo = {
   // --- admin (demo: sandi = "admin") ---
   async adminLogin(_email, password) {
     await sleep(300);
-    if (password !== 'admin') throw new UlasinError('bad-login');
+    if (password !== 'admin') throw new SatapError('bad-login');
     sessionStorage.setItem('ulasin_demo_admin', '1');
   },
   async adminSession() { return sessionStorage.getItem('ulasin_demo_admin') === '1'; },
@@ -171,7 +171,7 @@ const demo = {
   async adminGenerateBatch({ count, label }) {
     await sleep(300);
     const n = Math.floor(Number(count));
-    if (!(n >= 1 && n <= 500)) throw new UlasinError('invalid');
+    if (!(n >= 1 && n <= 500)) throw new SatapError('invalid');
     const s = await read();
     const out = [];
     while (out.length < n) {
@@ -203,7 +203,7 @@ let sbPromise;
 function supa() {
   sbPromise ??= (async () => {
     if (isPlaceholder(CONFIG.SUPABASE.url) || isPlaceholder(CONFIG.SUPABASE.anonKey)) {
-      throw new UlasinError('config');
+      throw new SatapError('config');
     }
     const { createClient } = await import('https://esm.sh/@supabase/supabase-js@2.45.4');
     return createClient(CONFIG.SUPABASE.url, CONFIG.SUPABASE.anonKey, {
@@ -214,21 +214,21 @@ function supa() {
 }
 
 function mapError(e) {
-  if (e instanceof UlasinError) return e;
+  if (e instanceof SatapError) return e;
   const msg = String(e?.message || e?.error_description || e || '');
   const code = String(e?.code || '');
-  if (code === 'invalid_credentials' || /invalid login credentials/i.test(msg)) return new UlasinError('bad-login');
-  if (/email not confirmed/i.test(msg)) return new UlasinError('bad-login');
-  if (code === 'user_not_found') return new UlasinError('bad-login');
-  if (/failed to fetch|networkerror|load failed/i.test(msg) || e instanceof TypeError) return new UlasinError('network');
-  if (/forbidden|permission denied|row-level security/i.test(msg)) return new UlasinError('permission-denied');
-  if (/not found/i.test(msg)) return new UlasinError('not-found');
-  return new UlasinError('unknown', msg);
+  if (code === 'invalid_credentials' || /invalid login credentials/i.test(msg)) return new SatapError('bad-login');
+  if (/email not confirmed/i.test(msg)) return new SatapError('bad-login');
+  if (code === 'user_not_found') return new SatapError('bad-login');
+  if (/failed to fetch|networkerror|load failed/i.test(msg) || e instanceof TypeError) return new SatapError('network');
+  if (/forbidden|permission denied|row-level security/i.test(msg)) return new SatapError('permission-denied');
+  if (/not found/i.test(msg)) return new SatapError('not-found');
+  return new SatapError('unknown', msg);
 }
 
 // RPC kita mengembalikan { ok:false, reason } tanpa raise -> diterjemahkan di sini.
 function unwrap(data) {
-  if (!data || data.ok !== true) throw new UlasinError((data && data.reason) || 'unknown');
+  if (!data || data.ok !== true) throw new SatapError((data && data.reason) || 'unknown');
   return data.card;
 }
 
@@ -267,7 +267,7 @@ const real = {
     const { data: row, error: e2 } = await sb
       .from('admins').select('user_id').eq('user_id', data.user.id).maybeSingle();
     if (e2) { await sb.auth.signOut(); throw mapError(e2); }
-    if (!row) { await sb.auth.signOut(); throw new UlasinError('not-admin'); }
+    if (!row) { await sb.auth.signOut(); throw new SatapError('not-admin'); }
   },
   async adminSession() {
     const sb = await supa();

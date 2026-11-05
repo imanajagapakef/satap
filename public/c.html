@@ -3,18 +3,117 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#FFF6E9">
+  <meta name="theme-color" content="#FAF7F2">
   <meta name="robots" content="noindex">
-  <title>Kartu Ulasin</title>
+  <title>Kartu Satap</title>
   <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/css/style.css">
+
+  <!-- Lapisan gaya minimalis di atas style.css -->
+  <style>
+    :root{
+      --bg:#FAF7F2; --surface:#fff; --ink:#1B1B1B; --muted:#6B6258; --line:#E7E0D6;
+      --accent:#D9480F; --accent-ink:#fff; --ok:#2B8A3E; --danger:#C92A2A; --radius:14px;
+    }
+    [hidden]{display:none!important}
+    *{box-sizing:border-box}
+    html{-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%}
+    body{margin:0;background:var(--bg)!important;color:var(--ink);font-family:'Nunito',system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.5}
+    .shell{max-width:440px;margin:0 auto;padding:max(20px,env(safe-area-inset-top)) 20px max(32px,env(safe-area-inset-bottom))}
+
+    /* Brand */
+    .brand{display:inline-flex;align-items:center;gap:.5rem;margin-bottom:28px;text-decoration:none;color:var(--ink)}
+    .brand .logo{display:grid;place-items:center;width:28px;height:28px;border-radius:8px;background:var(--accent);color:#fff;font-size:15px}
+    .brand .logo{position:relative;overflow:hidden}
+    .brand .logo img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block}
+    .brand .logo.has-img{background:transparent}
+    .brand .logo.has-img .logo-mark{display:none}
+    .brand .wordmark{font-weight:800;font-size:1.15rem;letter-spacing:-.01em}
+
+    /* Tipografi */
+    h1{margin:0 0 6px;font-family:inherit!important;font-weight:800;font-size:1.55rem;line-height:1.2;letter-spacing:-.02em;color:var(--ink)}
+    .muted{margin:0;color:var(--muted)}
+    .eyebrow{margin:0 0 6px;font-size:.78rem;font-weight:700;color:var(--muted);text-transform:none;letter-spacing:0}
+    .stack>*+*{margin-top:18px}
+    .center{text-align:center}
+
+    /* Kartu */
+    .card{background:var(--surface)!important;border:1px solid var(--line)!important;border-radius:var(--radius)!important;
+      box-shadow:none!important;padding:24px!important}
+
+    /* Chip kode */
+    .chip{display:inline-block;padding:2px 8px;border-radius:6px;background:#F1ECE4;color:var(--ink);
+      font:700 .78rem ui-monospace,Menlo,monospace;letter-spacing:.08em}
+
+    /* Stepper */
+    .steps{display:flex;gap:8px;list-style:none;margin:0 0 20px;padding:0}
+    .steps li{flex:1;display:flex;flex-direction:column;gap:6px;font-size:.78rem;font-weight:700;color:#A39A8E}
+    .steps li::before{content:"";height:4px;border-radius:4px;background:var(--line);transition:background .25s}
+    .steps .dot{display:none}
+    .steps li.u-on,.steps li.u-done{color:var(--ink)}
+    .steps li.u-on::before{background:var(--accent)}
+    .steps li.u-done::before{background:var(--ok)}
+
+    /* Form */
+    .label{display:block;margin-bottom:8px;font-weight:700;font-size:.92rem;color:var(--ink)}
+    .input,.pin-input{width:100%;min-height:56px;border:1.5px solid var(--line)!important;border-radius:12px!important;background:#fff!important;
+      padding:0 16px!important;font:600 1.05rem 'Nunito',sans-serif;color:var(--ink);transition:border-color .15s,box-shadow .15s}
+    .pin-input{text-align:center;font:800 1.7rem ui-monospace,Menlo,monospace!important;letter-spacing:.4em;text-indent:.4em}
+    .pin-input::placeholder{color:#CFC6B8;letter-spacing:.3em}
+    .input:focus,.pin-input:focus{outline:0;border-color:var(--accent)!important;box-shadow:0 0 0 4px rgba(217,72,15,.14)}
+    .input[aria-invalid="true"],.pin-input[aria-invalid="true"]{border-color:var(--danger)!important}
+    .field-error{min-height:1.3em;margin:8px 0 0;font-size:.88rem;font-weight:700;color:var(--danger)}
+    .field-error:empty{min-height:0;margin:0}
+
+    /* Tombol: target sentuh besar */
+    .btn{display:inline-flex;align-items:center;justify-content:center;min-height:54px;padding:0 20px;border-radius:12px;
+      font:800 1rem 'Nunito',sans-serif;text-decoration:none;cursor:pointer;border:1.5px solid transparent;
+      transition:background .15s,transform .1s,border-color .15s}
+    .btn-block{display:flex;width:100%}
+    .btn:active{transform:scale(.985)}
+    .btn-primary{background:var(--accent)!important;color:var(--accent-ink)!important;border-color:var(--accent)!important;box-shadow:none!important}
+    .btn-primary:hover{background:#BF3F0B!important}
+    .btn-primary[disabled],.btn-primary[aria-busy="true"]{opacity:.6;cursor:progress}
+    .btn-ghost{background:#fff!important;color:var(--ink)!important;border:1.5px solid var(--line)!important}
+    .btn-ghost:hover{border-color:#CFC6B8!important}
+    .btn-text{background:none!important;color:var(--muted)!important;border:0!important;min-height:44px}
+    .btn-text:hover{color:var(--ink)!important}
+    a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid rgba(217,72,15,.45);outline-offset:2px}
+
+    /* Info kecil */
+    .note{margin:0;padding:12px 14px;border-radius:10px;background:#F6F1E9;color:var(--muted);font-size:.88rem}
+    .biz{padding:16px;border:1px solid var(--line);border-radius:12px;background:#FDFBF8}
+
+    /* Loading & redirect */
+    [data-view="loading"],[data-view="redirect"],[data-view="error"]{padding-top:12vh}
+    .spinner{width:36px;height:36px;margin:0 auto;border-radius:50%;border:3px solid var(--line);border-top-color:var(--accent);animation:u-spin .8s linear infinite}
+    .spinner.big{width:44px;height:44px}
+    @keyframes u-spin{to{transform:rotate(360deg)}}
+    .progress{height:4px;width:160px;margin:16px auto 0;border-radius:4px;background:var(--line);overflow:hidden}
+    .progress b{display:block;height:100%;width:0;background:var(--accent);animation:u-fill 2s ease-out forwards}
+    @keyframes u-fill{to{width:100%}}
+
+    /* Selesai & error */
+    .big-emoji{font-size:2.6rem;line-height:1}
+    .check{display:grid;place-items:center;width:56px;height:56px;margin:0 auto;border-radius:50%;background:#EAF6EC;color:var(--ok);font-size:1.7rem;font-weight:800}
+    [data-step="done"] h1{color:var(--ink)}
+    #done-name{color:var(--ink)}
+
+    /* Transisi halus antar langkah */
+    [data-view]:not([hidden]),[data-step]:not([hidden]){animation:u-in .25s ease-out both}
+    @keyframes u-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+    .foot{text-align:center;margin-top:28px;font-size:.78rem;color:#A39A8E}
+    @media (max-width:360px){.pin-input{font-size:1.4rem!important;letter-spacing:.3em}}
+    @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+  </style>
 </head>
 <body>
 <main class="shell">
-  <a class="brand" href="/"><span class="logo" aria-hidden="true">★</span><span class="wordmark">Ulasin</span></a>
+  <a class="brand" href="/"><span class="logo" aria-hidden="true"><img src="/assets/logo.png" alt="" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()"><span class="logo-mark">★</span></span><span class="wordmark">Satap</span></a>
 
   <!-- 1. Memuat -->
   <section data-view="loading" class="center stack">
@@ -26,7 +125,8 @@
   <section data-view="redirect" hidden class="center stack">
     <div class="spinner big" aria-hidden="true"></div>
     <h1>Mengalihkan ke Google…</h1>
-    <p class="muted">Sebentar ya, formulir ulasan sedang dibuka.</p>
+    <p class="muted">Formulir ulasan sedang dibuka.</p>
+    <div class="progress" aria-hidden="true"><b></b></div>
     <p class="note" id="demo-note" hidden>Mode demo: di produksi pelanggan langsung dialihkan ke<br><span id="demo-url" class="small" style="word-break:break-all"></span></p>
     <a id="redirect-link" class="btn btn-primary btn-block" href="#" hidden>Buka formulir ulasan</a>
   </section>
@@ -42,13 +142,13 @@
     <div data-step="pin" class="card stack">
       <div>
         <p class="eyebrow">Kartu <span class="chip" id="card-code"></span></p>
-        <h1>Yuk, aktifkan kartu Anda</h1>
+        <h1>Aktifkan kartu Anda</h1>
         <p class="muted" id="pin-lead"></p>
       </div>
       <form id="pin-form" novalidate class="stack">
         <div>
           <label class="label" for="pin">PIN kartu</label>
-          <input id="pin" class="input pin-input" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]*" placeholder="••••••" aria-describedby="pin-error">
+          <input id="pin" class="input pin-input" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]*" placeholder="••••••" aria-describedby="pin-error" enterkeyhint="next">
           <p class="field-error" id="pin-error" role="alert"></p>
         </div>
         <button id="pin-next" class="btn btn-primary btn-block" type="submit">Lanjut</button>
@@ -76,8 +176,8 @@
     </div>
 
     <div data-step="done" hidden class="card stack center">
-      <div class="big-emoji" aria-hidden="true">🎉</div>
-      <h1>Kartu sudah aktif!</h1>
+      <div class="check" aria-hidden="true">✓</div>
+      <h1 tabindex="-1">Kartu sudah aktif</h1>
       <p class="muted">Kartu ini sekarang mengarah ke ulasan <strong id="done-name"></strong>.</p>
       <a id="done-test" class="btn btn-primary btn-block" target="_blank" rel="noopener" href="#">Coba sekarang</a>
       <a id="done-manage" class="btn btn-ghost btn-block" href="#">Kelola kartu</a>
@@ -88,12 +188,97 @@
   <!-- 4. Error -->
   <section data-view="error" hidden class="center stack">
     <div class="big-emoji" id="err-icon" aria-hidden="true">🙈</div>
-    <h1 id="err-title"></h1>
+    <h1 id="err-title" tabindex="-1"></h1>
     <p class="muted" id="err-text"></p>
     <button id="err-retry" type="button" class="btn btn-primary btn-block" hidden>Coba lagi</button>
     <a id="err-help" class="btn btn-ghost btn-block" target="_blank" rel="noopener" href="#">Hubungi kami via WhatsApp</a>
   </section>
+
+  <p class="foot">Satap</p>
 </main>
+
 <script type="module" src="/assets/js/card.js"></script>
+
+<!-- Peningkatan UX (tidak mengubah logika card.js) -->
+<script>
+(function(){
+  var $ = function(s,r){return (r||document).querySelector(s)};
+  var $$ = function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* 1. PIN: hanya angka, hapus error saat mengetik, tempel (paste) dibersihkan */
+  var pin = $('#pin'), pinErr = $('#pin-error');
+  if (pin){
+    pin.addEventListener('input', function(){
+      var clean = pin.value.replace(/\D+/g,'');
+      if (clean !== pin.value) pin.value = clean;
+      pin.removeAttribute('aria-invalid');
+      if (pinErr && pinErr.textContent) pinErr.textContent = '';
+    });
+  }
+  /* Tandai input merah bila ada pesan error */
+  function watchError(errEl, inputEl){
+    if (!errEl || !inputEl) return;
+    new MutationObserver(function(){
+      if (errEl.textContent.trim()) { inputEl.setAttribute('aria-invalid','true'); try{ inputEl.focus(); }catch(e){} }
+      else inputEl.removeAttribute('aria-invalid');
+    }).observe(errEl,{childList:true,characterData:true,subtree:true});
+  }
+  watchError(pinErr, pin);
+
+  /* 2. Stepper otomatis + fokus otomatis di setiap langkah */
+  var steps = $('#steps'), order = ['pin','search','confirm','done'];
+  function currentStep(){
+    var cur = 'pin';
+    $$('[data-step]').forEach(function(el){ if (!el.hidden) cur = el.getAttribute('data-step'); });
+    return cur;
+  }
+  var last = null;
+  function onStepChange(){
+    var cur = currentStep(), idx = order.indexOf(cur);
+    if (steps){
+      $$('li',steps).forEach(function(li,i){
+        li.classList.toggle('u-on', cur !== 'done' && i === idx);
+        li.classList.toggle('u-done', i < idx || cur === 'done');
+      });
+    }
+    if (cur === last) return;
+    var first = (last === null);
+    last = cur;
+    var panel = $('[data-step="'+cur+'"]');
+    if (!panel || (first && cur === 'pin' && !$('[data-view="activate"]') )) return;
+    if (!first) window.scrollTo({top:0,behavior:reduce?'auto':'smooth'});
+    setTimeout(function(){
+      var target = null;
+      if (cur === 'pin') target = pin;
+      else if (cur === 'search') target = $('#picker input');
+      else if (cur === 'confirm') target = $('#confirm-yes');
+      else if (cur === 'done') target = $('h1',panel);
+      if (target) try{ target.focus({preventScroll:true}); }catch(e){}
+    }, 60);
+  }
+  var mo = new MutationObserver(onStepChange);
+  $$('[data-step]').forEach(function(el){ mo.observe(el,{attributes:true,attributeFilter:['hidden']}); });
+  var act = $('[data-view="activate"]');
+  if (act) new MutationObserver(function(){ if(!act.hidden){ last=null; onStepChange(); } }).observe(act,{attributes:true,attributeFilter:['hidden']});
+  onStepChange();
+
+  /* 3. Halaman error: fokus ke judul agar terbaca pembaca layar */
+  var errView = $('[data-view="error"]');
+  if (errView) new MutationObserver(function(){
+    if (!errView.hidden){ var t = $('#err-title'); if (t) try{ t.focus({preventScroll:true}); }catch(e){} }
+  }).observe(errView,{attributes:true,attributeFilter:['hidden']});
+
+  /* 4. Cegah klik ganda pada tombol utama (feedback "memproses") */
+  ['#pin-next','#confirm-yes'].forEach(function(sel){
+    var b = $(sel); if (!b) return;
+    b.addEventListener('click', function(){
+      if (b.getAttribute('aria-busy') === 'true') return;
+      b.setAttribute('aria-busy','true');
+      setTimeout(function(){ b.removeAttribute('aria-busy'); }, 1500);
+    });
+  });
+})();
+</script>
 </body>
 </html>

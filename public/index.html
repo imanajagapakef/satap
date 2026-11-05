@@ -3,63 +3,124 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#FFF6E9">
-  <title>Ulasin · Satu tap, langsung ke ulasan Google toko Anda</title>
-  <meta name="description" content="Kartu NFC yang sekali ditempel langsung membuka formulir ulasan Google toko Anda. Tanpa aplikasi, tanpa login untuk pelanggan.">
+  <meta name="theme-color" content="#FAF7F2">
+  <title>Satap · Satu tap, langsung ke ulasan Google toko Anda</title>
+  <meta name="description" content="Kartu NFC yang sekali ditempel langsung membuka formulir ulasan Google toko Anda. Tanpa aplikasi, tanpa login untuk pelanggan. Rp50.000 sekali bayar.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="id_ID">
+  <meta property="og:site_name" content="Satap">
+  <meta property="og:title" content="Satap · Satu tap, langsung ke ulasan Google toko Anda">
+  <meta property="og:description" content="Kartu NFC + QR untuk meja kasir. Pelanggan tap, formulir ulasan Google terbuka. Rp50.000 sekali bayar, tanpa langganan.">
+  <meta name="twitter:card" content="summary">
   <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/upgrade.css">
+
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@graph":[
+      {"@type":"Product","name":"Kartu Satap (NFC + QR)","description":"Kartu NFC dan QR yang membuka formulir ulasan Google toko Anda dengan satu tap.","brand":{"@type":"Brand","name":"Satap"},
+       "offers":{"@type":"Offer","price":"50000","priceCurrency":"IDR"}},
+      {"@type":"FAQPage","mainEntity":[
+        {"@type":"Question","name":"Pelanggan perlu unduh aplikasi?","acceptedAnswer":{"@type":"Answer","text":"Tidak. Kartu NFC hanya berisi tautan. HP yang menempel akan membuka browser seperti membuka link biasa."}},
+        {"@type":"Question","name":"HP pelanggan tidak ada NFC-nya?","acceptedAnswer":{"@type":"Answer","text":"Setiap kartu punya QR code. Pelanggan tinggal memindai QR tersebut dan hasilnya sama."}},
+        {"@type":"Question","name":"Kalau toko saya pindah alamat?","acceptedAnswer":{"@type":"Answer","text":"Masuk ke halaman Kelola kartu pakai kode kartu dan PIN, lalu ganti tokonya. Kartunya tidak perlu diganti."}}
+      ]}
+    ]
+  }
+  </script>
 </head>
 <body>
 <main class="shell shell-wide">
 
-  <header class="topbar">
-    <a class="brand" href="/"><span class="logo" aria-hidden="true">★</span><span class="wordmark">Ulasin</span></a>
+  <header class="topbar" id="topbar">
+    <a class="brand" href="/"><span class="logo" aria-hidden="true"><img src="/assets/logo.png" alt="" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()"><span class="logo-mark">★</span></span><span class="wordmark">Satap</span></a>
     <nav class="nav" aria-label="Navigasi utama">
       <a href="#cara">Cara pakai</a>
       <a href="#fitur">Fitur</a>
       <a href="/harga.html">Harga</a>
       <a href="/kelola.html">Kelola kartu</a>
+      <a class="nav-cta" data-wa target="_blank" rel="noopener" href="#">Pesan</a>
     </nav>
   </header>
 
   <!-- HERO -->
   <section class="hero">
     <div>
-      <span class="tag">📶 Tanpa aplikasi · tanpa login</span>
-      <h1>Satu tap, langsung ke ulasan Google toko Anda.</h1>
+      <span class="tag">Tanpa aplikasi · tanpa login</span>
+      <h1>Satu tap, langsung ke <em>ulasan Google</em> toko Anda.</h1>
       <p class="hero-lead">
         Kartu NFC dan QR untuk meja kasir. Pelanggan cukup menempelkan HP ke kartu,
         browser langsung membuka formulir ulasan Google toko Anda. Selesai.
       </p>
       <div class="hero-cta">
         <a class="btn btn-primary" data-wa target="_blank" rel="noopener" href="#">Pesan kartu via WhatsApp</a>
-        <a class="btn btn-ghost" href="/harga.html">Lihat harga</a>
+        <a class="btn btn-ghost" href="#cara">Lihat cara kerjanya</a>
       </div>
-      <p class="small muted" style="margin-top:12px">
-        Belum punya kartunya? Tidak apa-apa — lihat dulu cara kerjanya di bawah.
-      </p>
+      <ul class="hero-points">
+        <li>Rp50.000 sekali bayar</li>
+        <li>Tanpa langganan</li>
+        <li>Ada QR cadangan</li>
+      </ul>
     </div>
 
-    <div class="mock">
+    <div class="mock" aria-hidden="true">
       <div class="mock-card">
-        <span class="mock-nfc" aria-hidden="true">📶</span>
-        <strong>Kopi Senja</strong>
-        <span class="mock-sub">Tap untuk ulasan</span>
+        <span class="mock-nfc">📶</span>
+        <div>
+          <strong>Kopi Senja</strong><br>
+          <span class="mock-sub">Tap untuk ulasan</span>
+        </div>
       </div>
       <div class="mock-tap">
-        <span class="ring" aria-hidden="true">⭐</span>
+        <span class="ring">★★★★★</span>
         <span>Pelanggan tap → formulir ulasan Google terbuka</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- STRIP -->
+  <div class="strip" role="list">
+    <div role="listitem"><b>Rp50.000</b><span>Sekali bayar</span></div>
+    <div role="listitem"><b>0 aplikasi</b><span>Pelanggan tidak perlu unduh</span></div>
+    <div role="listitem"><b>NFC + QR</b><span>Dalam satu kartu</span></div>
+    <div role="listitem"><b>Ganti kapan saja</b><span>Tujuan ulasan bisa diubah</span></div>
+  </div>
+
+  <!-- CARA LAMA vs SATAP -->
+  <section class="section">
+    <span class="eyebrow">Kenapa Satap</span>
+    <h2>Minta ulasan jadi semudah menempel HP.</h2>
+    <p class="section-lead">Ulasan Google membantu calon pelanggan percaya pada toko Anda. Masalahnya, kebanyakan pelanggan malas mencari dan mengisinya.</p>
+    <div class="compare">
+      <div class="col before">
+        <h3>Cara biasa</h3>
+        <ul>
+          <li>Meminta pelanggan satu per satu</li>
+          <li>Pelanggan harus mencari nama toko di Google Maps</li>
+          <li>Banyak yang lupa atau menunda</li>
+        </ul>
+      </div>
+      <div class="col after">
+        <h3>Dengan Satap</h3>
+        <ul>
+          <li>Kartu di meja kasir, tidak perlu meminta berkali-kali</li>
+          <li>Satu tap, formulir ulasan toko Anda langsung terbuka</li>
+          <li>QR code untuk HP tanpa NFC</li>
+        </ul>
       </div>
     </div>
   </section>
 
   <!-- CARA PAKAI -->
   <section class="section" id="cara">
-    <h2>Cara pakainya cuma 3 langkah</h2>
-    <p class="section-lead">Sekali atur, kartunya jalan terus. Kalau pindah toko atau ganti nama usaha, tinggal ubah dari HP.</p>
+    <span class="eyebrow">Cara pakai</span>
+    <h2>Cuma 3 langkah, sekali atur.</h2>
+    <p class="section-lead">Kartunya jalan terus. Kalau pindah toko atau ganti nama usaha, tinggal ubah dari HP.</p>
     <div class="steps3">
       <div class="feature">
         <span class="num">1</span>
@@ -69,7 +130,7 @@
       <div class="feature">
         <span class="num">2</span>
         <h3>Taruh di meja kasir</h3>
-        <p>Tinggal letakkan di dekat kasir atau tempel di meja. Ada QR code-nya juga untuk HP yang tidak punya NFC.</p>
+        <p>Letakkan di dekat kasir atau tempel di meja. Ada QR code-nya juga untuk HP yang tidak punya NFC.</p>
       </div>
       <div class="feature">
         <span class="num">3</span>
@@ -81,8 +142,9 @@
 
   <!-- FITUR -->
   <section class="section" id="fitur">
-    <h2>Kenapa pakai Ulasin</h2>
-    <p class="section-lead">Dirancang untuk usaha kecil yang tidak punya waktu mengurus hal teknis.</p>
+    <span class="eyebrow">Fitur</span>
+    <h2>Dirancang untuk usaha kecil.</h2>
+    <p class="section-lead">Tanpa urusan teknis yang menyita waktu Anda.</p>
     <div class="cardgrid cardgrid-2">
       <div class="feature">
         <span class="ico" aria-hidden="true">⚡</span>
@@ -92,7 +154,7 @@
       <div class="feature">
         <span class="ico" aria-hidden="true">📱</span>
         <h3>QR code sebagai cadangan</h3>
-        <p>Setiap kartu punya QR code dengan tujuan yang sama — untuk HP yang NFC-nya tidak aktif.</p>
+        <p>Setiap kartu punya QR code dengan tujuan yang sama, untuk HP yang NFC-nya tidak aktif.</p>
       </div>
       <div class="feature">
         <span class="ico" aria-hidden="true">📊</span>
@@ -107,10 +169,19 @@
     </div>
   </section>
 
+  <!-- INTEGRITAS -->
+  <section class="section">
+    <div class="promise">
+      <span class="ico" aria-hidden="true">🤝</span>
+      <p><strong>Ulasan yang jujur, sesuai aturan Google.</strong> Semua pelanggan diarahkan ke formulir ulasan yang sama, tanpa menyaring siapa yang puas. Satap tidak menjual atau membuat ulasan bintang lima.</p>
+    </div>
+  </section>
+
   <!-- COCOK UNTUK -->
   <section class="section">
-    <h2>Cocok untuk</h2>
-    <p class="section-lead">Usaha yang ingin ulasan Google lebih banyak tanpa harus meminta satu per satu.</p>
+    <span class="eyebrow">Cocok untuk</span>
+    <h2>Usaha yang ingin ulasan lebih banyak.</h2>
+    <p class="section-lead">Tanpa harus meminta satu per satu.</p>
     <div class="chips">
       <span class="tag">☕ Kedai kopi</span>
       <span class="tag">🍜 Warung &amp; rumah makan</span>
@@ -125,8 +196,9 @@
 
   <!-- FAQ -->
   <section class="section" id="faq">
+    <span class="eyebrow">FAQ</span>
     <h2>Pertanyaan yang sering ditanya</h2>
-    <div class="faq" style="margin-top:18px">
+    <div class="faq">
       <details>
         <summary>Pelanggan perlu unduh aplikasi?</summary>
         <p>Tidak. Kartu NFC hanya berisi tautan. HP yang menempel akan membuka browser seperti membuka link biasa.</p>
@@ -144,26 +216,26 @@
         <p>Masuk ke halaman Kelola kartu pakai kode kartu dan PIN, lalu ganti tokonya. Kartunya tidak perlu diganti.</p>
       </details>
       <details>
-        <summary>Apakah Ulasin bisa memberi ulasan bintang lima?</summary>
+        <summary>Apakah Satap bisa memberi ulasan bintang lima?</summary>
         <p>Tidak, dan Anda sebaiknya berhati-hati dengan layanan yang menjanjikannya. Ulasan harus asli dari pelanggan. Ulasan yang dibeli atau dibuat otomatis melanggar kebijakan Google.</p>
       </details>
     </div>
   </section>
 
   <!-- CTA -->
-  <section class="cta-band">
-    <h2>Siap punya kartu Ulasin?</h2>
-    <p class="muted" style="max-width:52ch;margin:6px auto 0">
-      Ceritakan usaha Anda, kami bantu atur kartunya sampai jalan.
+  <section class="cta-band" id="pesan">
+    <h2>Siap punya kartu Satap?</h2>
+    <p class="muted" style="max-width:52ch;margin:10px auto 0">
+      Ceritakan usaha Anda, kami bantu atur kartunya sampai jalan. Rp50.000, sekali bayar.
     </p>
     <div class="row">
       <a class="btn btn-primary" data-wa target="_blank" rel="noopener" href="#">Chat kami di WhatsApp</a>
-      <a class="btn btn-ghost" href="/harga.html">Lihat paket harga</a>
+      <a class="btn btn-ghost" href="/harga.html">Lihat detail harga</a>
     </div>
   </section>
 
   <footer class="footer">
-    <span>© Ulasin — kartu ulasan Google untuk UMKM.</span>
+    <span>© Satap — kartu ulasan Google untuk UMKM.</span>
     <nav>
       <a href="/harga.html">Harga</a>
       <a href="/kelola.html">Kelola kartu</a>
@@ -172,6 +244,30 @@
   </footer>
 
 </main>
+
+<!-- CTA lengket (hanya tampil di HP) -->
+<div class="sticky-cta" id="sticky-cta">
+  <a class="btn btn-primary" data-wa target="_blank" rel="noopener" href="#">Pesan kartu · Rp50.000</a>
+</div>
+
 <script type="module" src="/assets/js/landing.js"></script>
+<script>
+(function(){
+  var top = document.getElementById('topbar');
+  if (top) addEventListener('scroll', function(){ top.classList.toggle('is-scrolled', scrollY > 8); }, {passive:true});
+
+  /* Sembunyikan CTA lengket saat band CTA / footer sudah terlihat */
+  var sticky = document.getElementById('sticky-cta'), band = document.getElementById('pesan');
+  if (sticky && band && 'IntersectionObserver' in window){
+    new IntersectionObserver(function(e){ sticky.classList.toggle('is-hidden', e[0].isIntersecting); },{threshold:.15}).observe(band);
+  }
+
+  /* Satu FAQ terbuka sekaligus, lebih rapi di HP */
+  var d = document.querySelectorAll('.faq details');
+  d.forEach(function(el){ el.addEventListener('toggle', function(){
+    if (el.open) d.forEach(function(o){ if (o !== el) o.open = false; });
+  }); });
+})();
+</script>
 </body>
 </html>

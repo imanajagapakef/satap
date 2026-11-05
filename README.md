@@ -1,4 +1,4 @@
-# Ulasin — kartu NFC/QR ulasan Google
+# Satap — kartu NFC/QR ulasan Google
 
 Kartu NFC/QR yang sekali tap langsung membuka formulir ulasan Google toko. Tema hangat untuk UMKM, tanpa build step: HTML + CSS + JavaScript (ES modules).
 
@@ -19,7 +19,10 @@ public/                       <- Cloudflare Pages (root statis)
   _worker.js                  redirect 302 milidetik untuk kartu aktif
   _redirects                  jaring pengaman /c/* -> /c
   _headers                    no-store untuk halaman kartu
-  assets/css/style.css        semua gaya + design token (warna di :root)
+  assets/css/style.css        gaya dasar + design token (semua halaman)
+  assets/css/upgrade.css      lapisan desain khusus landing & harga
+  assets/img/favicon.svg      ikon tab
+  assets/img/logo.png         (opsional) logo — otomatis dipakai kalau ada
   assets/js/
     config.js                 <- SEMUA KONFIGURASI & API KEY ada di sini
     db.js                     <- data layer (demo localStorage | Supabase)
