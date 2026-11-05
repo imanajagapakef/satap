@@ -4,24 +4,10 @@
    Palet: netral hangat + aksen oranye.
    ============================================================ */
 
+/* Warna sepenuhnya ikut style.css (satu sumber). Di sini hanya spesifik landing. */
 :root {
-  --bg: #FAF7F2;
-  --surface: #FFFFFF;
-  --ink: #03221A;
-  --muted: #6B6258;
-  --line: #E7E0D6;
-  --primary: #D9480F;
-  --primary-dark: #BF3F0B;
-  --accent: #D9480F;
-  --soft: #F3ECE3;
-  --ok: #2B8A3E;
-  --ok-bg: #EAF6EC;
-  --warn: #8A5A00;
-  --warn-bg: #FFF4DA;
-  --danger: #C92A2A;
-  --danger-bg: #FBE7E7;
   --radius: 14px;
-  --shadow: 0 1px 2px rgba(27, 27, 27, 0.04), 0 10px 30px rgba(27, 27, 27, 0.05);
+  --shadow: 0 1px 2px rgba(0, 32, 24, 0.04), 0 10px 30px rgba(0, 32, 24, 0.06);
 }
 
 html { scroll-behavior: smooth; }
@@ -136,7 +122,7 @@ h2 { font-weight: 800; }
   display: flex;
   align-items: center;
   gap: 14px;
-  background: linear-gradient(155deg, var(--primary) 0%, #A63108 100%);
+  background: linear-gradient(155deg, var(--primary) 0%, #002018 100%);
   box-shadow: none;
 }
 .mock-card strong { font-size: 1.15rem; margin: 0; }
@@ -198,9 +184,9 @@ h2 { font-weight: 800; }
 .compare .before li::before {
   content: '✕';
   position: absolute; left: 0;
-  color: #BDB2A4; font-weight: 800;
+  color: #A7B5AE; font-weight: 800;
 }
-.compare .after { background: #F7FBF8; border-color: #CFE3D4; }
+.compare .after { background: #F3FAE7; border-color: #D8EFA8; }
 .compare .after li { color: var(--ink); }
 .compare .after li::before {
   content: '✓';
@@ -274,15 +260,15 @@ h2 { font-weight: 800; }
   text-align: center;
 }
 .cta-band h2 { color: #fff; margin-bottom: 8px; }
-.cta-band .muted { color: #CFC6B8; }
+.cta-band .muted { color: #B9C9C0; }
 .cta-band .row { margin-top: 20px; }
 .cta-band .btn-primary {
-  background: #fff !important;
-  color: var(--ink) !important;
-  border-color: #fff !important;
+  background: var(--accent) !important;
+  color: var(--accent-ink) !important;
+  border-color: var(--accent) !important;
   box-shadow: none !important;
 }
-.cta-band .btn-primary:hover { background: #F3ECE3 !important; }
+.cta-band .btn-primary:hover { background: var(--accent-dark) !important; }
 .cta-band .btn-ghost {
   background: transparent !important;
   color: #fff !important;
@@ -316,16 +302,17 @@ h2 { font-weight: 800; }
 .btn { border-radius: 12px; }
 .btn-primary {
   box-shadow: none;
-  background: var(--primary);
-  border-color: var(--primary);
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
 }
-.btn-primary:hover { background: var(--primary-dark); border-color: var(--primary-dark); }
+.btn-primary:hover { background: var(--accent-dark); border-color: var(--accent-dark); }
 .btn-primary:active { box-shadow: none; transform: scale(0.985); }
 .btn-ghost { background: var(--surface); border-color: var(--line); }
-.btn-ghost:hover { background: var(--soft); border-color: #D8CDBE; }
+.btn-ghost:hover { background: var(--soft); border-color: #CFD9CF; }
 
 /* ---------- aksesibilitas ---------- */
-:focus-visible { outline: 3px solid rgba(217, 72, 15, 0.45); outline-offset: 2px; }
+:focus-visible { outline: 3px solid rgba(14, 107, 77, 0.45); outline-offset: 2px; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
