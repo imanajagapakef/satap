@@ -15,7 +15,7 @@
   <!-- Lapisan gaya minimalis di atas style.css -->
   <style>
     :root{
-      --bg:#FAF7F2; --surface:#fff; --ink:#1B1B1B; --muted:#6B6258; --line:#E7E0D6;
+      --bg:#FAF7F2; --surface:#fff; --ink:#03221A; --muted:#6B6258; --line:#E7E0D6;
       --accent:#D9480F; --accent-ink:#fff; --ok:#2B8A3E; --danger:#C92A2A; --radius:14px;
     }
     [hidden]{display:none!important}
@@ -26,11 +26,7 @@
 
     /* Brand */
     .brand{display:inline-flex;align-items:center;gap:.5rem;margin-bottom:28px;text-decoration:none;color:var(--ink)}
-    .brand .logo{display:grid;place-items:center;width:28px;height:28px;border-radius:8px;background:var(--accent);color:#fff;font-size:15px}
-    .brand .logo{position:relative;overflow:hidden}
-    .brand .logo img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block}
-    .brand .logo.has-img{background:transparent}
-    .brand .logo.has-img .logo-mark{display:none}
+    .brand .brand-logo{height:26px}
     .brand .wordmark{font-weight:800;font-size:1.15rem;letter-spacing:-.01em}
 
     /* Tipografi */
@@ -113,7 +109,7 @@
 </head>
 <body>
 <main class="shell">
-  <a class="brand" href="/"><span class="logo" aria-hidden="true"><img src="/assets/logo.png" alt="" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()"><span class="logo-mark">★</span></span><span class="wordmark">Satap</span></a>
+  <a class="brand" href="/"><img class="brand-logo" src="/assets/logo.png" alt="Satap" onerror="this.parentNode.classList.add('no-logo');this.remove()"><span class="wordmark">Satap</span></a>
 
   <!-- 1. Memuat -->
   <section data-view="loading" class="center stack">
