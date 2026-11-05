@@ -1,0 +1,4 @@
+# Salin jadi .dev.vars untuk `npx wrangler pages dev public`
+# Nilai ini SAMA dengan yang ada di public/assets/js/config.js (publishable, aman).
+SUPABASE_URL=https://hgoexsrivadbtngydnon.supabase.co
+SUPABASE_ANON_KEY=sb_publishable_mKY_7cXC6Q5XL63P0djnvw_UZZVyedc

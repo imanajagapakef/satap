@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#FFF6E9">
-  <title>Ulasin · Tap kartunya, ulasan masuk</title>
-  <meta name="description" content="Kartu NFC yang langsung membuka formulir ulasan Google untuk toko Anda.">
+  <title>Ulasin · Satu tap, langsung ke ulasan Google toko Anda</title>
+  <meta name="description" content="Kartu NFC yang sekali ditempel langsung membuka formulir ulasan Google toko Anda. Tanpa aplikasi, tanpa login untuk pelanggan.">
   <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,14 +13,164 @@
   <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 <body>
-<main class="shell center stack">
-  <a class="brand" href="/"><span class="logo" aria-hidden="true">★</span><span class="wordmark">Ulasin</span></a>
-  <div class="big-emoji" aria-hidden="true">⭐</div>
-  <h1>Tap kartunya, ulasan masuk.</h1>
-  <p class="muted">Pelanggan cukup menempelkan HP ke kartu, langsung sampai di formulir ulasan Google toko Anda.</p>
-  <!-- TODO(next): landing page lengkap (manfaat, cara kerja, harga, pesan) -->
-  <a class="btn btn-primary btn-block" href="/kelola.html">Kelola kartu saya</a>
-  <a id="wa-link" class="btn btn-ghost btn-block" target="_blank" rel="noopener" href="#">Hubungi kami via WhatsApp</a>
+<main class="shell shell-wide">
+
+  <header class="topbar">
+    <a class="brand" href="/"><span class="logo" aria-hidden="true">★</span><span class="wordmark">Ulasin</span></a>
+    <nav class="nav" aria-label="Navigasi utama">
+      <a href="#cara">Cara pakai</a>
+      <a href="#fitur">Fitur</a>
+      <a href="/harga.html">Harga</a>
+      <a href="/kelola.html">Kelola kartu</a>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div>
+      <span class="tag">📶 Tanpa aplikasi · tanpa login</span>
+      <h1>Satu tap, langsung ke ulasan Google toko Anda.</h1>
+      <p class="hero-lead">
+        Kartu NFC dan QR untuk meja kasir. Pelanggan cukup menempelkan HP ke kartu,
+        browser langsung membuka formulir ulasan Google toko Anda. Selesai.
+      </p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" data-wa target="_blank" rel="noopener" href="#">Pesan kartu via WhatsApp</a>
+        <a class="btn btn-ghost" href="/harga.html">Lihat harga</a>
+      </div>
+      <p class="small muted" style="margin-top:12px">
+        Belum punya kartunya? Tidak apa-apa — lihat dulu cara kerjanya di bawah.
+      </p>
+    </div>
+
+    <div class="mock">
+      <div class="mock-card">
+        <span class="mock-nfc" aria-hidden="true">📶</span>
+        <strong>Kopi Senja</strong>
+        <span class="mock-sub">Tap untuk ulasan</span>
+      </div>
+      <div class="mock-tap">
+        <span class="ring" aria-hidden="true">⭐</span>
+        <span>Pelanggan tap → formulir ulasan Google terbuka</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CARA PAKAI -->
+  <section class="section" id="cara">
+    <h2>Cara pakainya cuma 3 langkah</h2>
+    <p class="section-lead">Sekali atur, kartunya jalan terus. Kalau pindah toko atau ganti nama usaha, tinggal ubah dari HP.</p>
+    <div class="steps3">
+      <div class="feature">
+        <span class="num">1</span>
+        <h3>Aktifkan kartunya</h3>
+        <p>Tap satu kali, masukkan PIN 6 angka di belakang kartu, lalu pilih nama toko Anda dari Google Maps.</p>
+      </div>
+      <div class="feature">
+        <span class="num">2</span>
+        <h3>Taruh di meja kasir</h3>
+        <p>Tinggal letakkan di dekat kasir atau tempel di meja. Ada QR code-nya juga untuk HP yang tidak punya NFC.</p>
+      </div>
+      <div class="feature">
+        <span class="num">3</span>
+        <h3>Pelanggan tap, ulasan masuk</h3>
+        <p>Begitu ditempel, browser pelanggan langsung membuka formulir ulasan Google toko Anda.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FITUR -->
+  <section class="section" id="fitur">
+    <h2>Kenapa pakai Ulasin</h2>
+    <p class="section-lead">Dirancang untuk usaha kecil yang tidak punya waktu mengurus hal teknis.</p>
+    <div class="cardgrid cardgrid-2">
+      <div class="feature">
+        <span class="ico" aria-hidden="true">⚡</span>
+        <h3>Cepat dan sederhana</h3>
+        <p>Tidak ada aplikasi yang perlu diunduh. Satu tempel, browser terbuka, formulir ulasan muncul.</p>
+      </div>
+      <div class="feature">
+        <span class="ico" aria-hidden="true">📱</span>
+        <h3>QR code sebagai cadangan</h3>
+        <p>Setiap kartu punya QR code dengan tujuan yang sama — untuk HP yang NFC-nya tidak aktif.</p>
+      </div>
+      <div class="feature">
+        <span class="ico" aria-hidden="true">📊</span>
+        <h3>Pantau jumlah tap</h3>
+        <p>Dashboard pemilik menampilkan berapa kali kartunya ditempel, tanpa data pribadi pelanggan.</p>
+      </div>
+      <div class="feature">
+        <span class="ico" aria-hidden="true">🔄</span>
+        <h3>Ganti tujuan kapan saja</h3>
+        <p>Pindah cabang atau ganti nama toko? Ubah dari dashboard, kartunya tetap bisa dipakai. Tidak perlu beli baru.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- COCOK UNTUK -->
+  <section class="section">
+    <h2>Cocok untuk</h2>
+    <p class="section-lead">Usaha yang ingin ulasan Google lebih banyak tanpa harus meminta satu per satu.</p>
+    <div class="chips">
+      <span class="tag">☕ Kedai kopi</span>
+      <span class="tag">🍜 Warung &amp; rumah makan</span>
+      <span class="tag">💇 Salon &amp; barbershop</span>
+      <span class="tag">🔧 Bengkel</span>
+      <span class="tag">🧺 Laundry</span>
+      <span class="tag">🏨 Penginapan</span>
+      <span class="tag">🦷 Klinik &amp; praktik</span>
+      <span class="tag">🛒 Toko kelontong</span>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section" id="faq">
+    <h2>Pertanyaan yang sering ditanya</h2>
+    <div class="faq" style="margin-top:18px">
+      <details>
+        <summary>Pelanggan perlu unduh aplikasi?</summary>
+        <p>Tidak. Kartu NFC hanya berisi tautan. HP yang menempel akan membuka browser seperti membuka link biasa.</p>
+      </details>
+      <details>
+        <summary>HP pelanggan tidak ada NFC-nya?</summary>
+        <p>Setiap kartu punya QR code. Pelanggan tinggal memindai QR tersebut dan hasilnya sama.</p>
+      </details>
+      <details>
+        <summary>Apakah boleh hanya mengarahkan pelanggan yang puas ke Google?</summary>
+        <p>Tidak, dan kami tidak menyarankan itu. Semua pelanggan diarahkan langsung ke formulir ulasan yang sama. Menyaring ulasan melanggar kebijakan Google dan ulasannya bisa dihapus.</p>
+      </details>
+      <details>
+        <summary>Kalau toko saya pindah alamat?</summary>
+        <p>Masuk ke halaman Kelola kartu pakai kode kartu dan PIN, lalu ganti tokonya. Kartunya tidak perlu diganti.</p>
+      </details>
+      <details>
+        <summary>Apakah Ulasin bisa memberi ulasan bintang lima?</summary>
+        <p>Tidak, dan Anda sebaiknya berhati-hati dengan layanan yang menjanjikannya. Ulasan harus asli dari pelanggan. Ulasan yang dibeli atau dibuat otomatis melanggar kebijakan Google.</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-band">
+    <h2>Siap punya kartu Ulasin?</h2>
+    <p class="muted" style="max-width:52ch;margin:6px auto 0">
+      Ceritakan usaha Anda, kami bantu atur kartunya sampai jalan.
+    </p>
+    <div class="row">
+      <a class="btn btn-primary" data-wa target="_blank" rel="noopener" href="#">Chat kami di WhatsApp</a>
+      <a class="btn btn-ghost" href="/harga.html">Lihat paket harga</a>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <span>© Ulasin — kartu ulasan Google untuk UMKM.</span>
+    <nav>
+      <a href="/harga.html">Harga</a>
+      <a href="/kelola.html">Kelola kartu</a>
+      <a data-wa target="_blank" rel="noopener" href="#">Bantuan</a>
+    </nav>
+  </footer>
+
 </main>
 <script type="module" src="/assets/js/landing.js"></script>
 </body>

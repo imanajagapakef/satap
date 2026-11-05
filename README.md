@@ -1,24 +1,24 @@
 # Ulasin — kartu NFC/QR ulasan Google
 
-Kartu NFC/QR yang sekali tap langsung membuka formulir ulasan Google toko. Ini kerangka UI/UX (tema hangat UMKM) dengan data layer terpisah supaya logika mudah dilanjutkan.
-
-Tanpa build step: HTML + CSS + JavaScript (ES modules) biasa.
+Kartu NFC/QR yang sekali tap langsung membuka formulir ulasan Google toko. Tema hangat untuk UMKM, tanpa build step: HTML + CSS + JavaScript (ES modules).
 
 - **Database & backend**: Supabase (Postgres + RPC + Auth)
-- **Hosting**: Cloudflare Pages
+- **Hosting**: Cloudflare Pages (+ `_worker.js` untuk redirect kilat)
 - **Pencarian bisnis**: Google Places API (New)
-- **SDK Supabase** dimuat dari CDN hanya saat `DEMO_MODE = false`
 
 ## Struktur
 
 ```
 public/                       <- Cloudflare Pages (root statis)
-  index.html                  landing sederhana (placeholder)
-  c.html                      /c/{kode}: redirect | aktivasi 3 langkah | error
+  index.html                  landing page
+  harga.html                  halaman harga
+  c.html                      /c/{kode}: aktivasi 3 langkah | error
   kelola.html                 dashboard pemilik (kode kartu + PIN)
   admin.html                  admin: buat batch, ekspor CSV, blokir
   404.html
-  _redirects                  rewrite /c/* -> /c.html
+  _worker.js                  redirect 302 milidetik untuk kartu aktif
+  _redirects                  jaring pengaman /c/* -> /c
+  _headers                    no-store untuk halaman kartu
   assets/css/style.css        semua gaya + design token (warna di :root)
   assets/js/
     config.js                 <- SEMUA KONFIGURASI & API KEY ada di sini
@@ -29,10 +29,13 @@ public/                       <- Cloudflare Pages (root statis)
     card.js kelola.js admin.js landing.js
 supabase/
   migrations/                 skema + RLS + RPC (sumber kebenaran backend)
-    0001_ulasin.sql
-    0002_fix_pin_lockout.sql
-    0003_fix_grants.sql
-    0004_fix_grants_public.sql
+    0001_ulasin.sql              tabel + RLS + RPC dasar
+    0002_fix_pin_lockout.sql     lockout PIN yang benar
+    0003_fix_grants.sql          cabut grant berlebih
+    0004_fix_grants_public.sql   cabut EXECUTE default dari PUBLIC
+    0005_scan_rate_limit.sql     (dibatalkan oleh 0006)
+    0006_simple_scan_count.sql   hitung tap apa adanya
+    0007_verify_place_id.sql     verifikasi Place ID ke Google + private_config
 ```
 
 ## 1. Coba sekarang (mode demo, tanpa server)
@@ -40,7 +43,7 @@ supabase/
 Ubah `DEMO_MODE: true` di `public/assets/js/config.js`, lalu:
 
 ```bash
-npx serve public        # atau: python -m http.server -d public 3000
+python -m http.server 3000 --directory public     # atau: npx serve public
 ```
 
 | Halaman | URL | Data demo |
@@ -50,7 +53,7 @@ npx serve public        # atau: python -m http.server -d public 3000
 | Kelola | `/kelola.html` | `DEMO02` / `654321` |
 | Admin | `/admin.html` | sandi `admin` |
 
-Di produksi alamat kartu adalah `/c/KODE` (dibuatkan oleh `_redirects`). Di server statis biasa pakai `?c=KODE`.
+Di produksi alamat kartu adalah `/c/KODE` (ditangani `_worker.js`). Di server statis biasa pakai `?c=KODE`.
 
 Reset data demo: hapus localStorage key `ulasin_demo_v1`.
 
@@ -60,18 +63,20 @@ Semua tulis & cek PIN lewat **RPC Postgres `security definer`**. Client tidak pe
 
 | RPC | Akses | Kegunaan |
 |---|---|---|
-| `public_card(code)` | anon | baca 1 kartu (halaman redirect) |
+| `public_card(code)` | anon | baca 1 kartu |
 | `verify_owner(code,pin)` | anon | cek PIN pemilik |
-| `activate_card(...)` | anon | aktivasi kartu |
-| `update_target(...)` | anon | ganti bisnis tujuan |
+| `activate_card(...)` | anon | aktivasi kartu (verifikasi Place ID dulu) |
+| `update_target(...)` | anon | ganti bisnis tujuan (verifikasi Place ID dulu) |
 | `track_scan(code)` | anon | hitung tap (hanya kartu aktif) |
 | `generate_batch(count,label)` | admin | buat batch kartu + PIN |
 | `set_card_blocked(code,bool)` | admin | blokir / buka blokir |
 
-- PIN disimpan sebagai **bcrypt** (`pgcrypto`) di `card_secrets` — tabel ini tanpa RLS policy = tertutup total untuk client.
+- PIN disimpan sebagai **bcrypt** (`pgcrypto`) di `card_secrets` — tabel tanpa RLS policy = tertutup total untuk client.
 - Lockout 15 menit setelah 5 kali PIN salah.
 - URL ulasan dibuat **di server** dari Place ID.
+- **Place ID diverifikasi ke Google Places (Details)** lewat `places_lookup()`. Nama & alamat yang disimpan diambil dari Google, bukan dari client.
 - RPC yang mengembalikan `{ ok:false, reason }` (bukan raise) supaya update penghitung gagal-PIN tidak ikut ter-rollback.
+- API key untuk `places_lookup()` disimpan di tabel `private_config` (RLS aktif, tanpa policy).
 
 ## 3. Setup Supabase (sekali saja)
 
@@ -84,7 +89,7 @@ Semua tulis & cek PIN lewat **RPC Postgres `security definer`**. Client tidak pe
 3. Isi `public/assets/js/config.js`:
    - `SUPABASE.url` dan `SUPABASE.anonKey` (Project Settings > API)
    - `PLACES_API_KEY` (Google Cloud Console > aktifkan **Places API (New)** > API key.
-     **Wajib dibatasi**: HTTP referrer = domain Anda, API restriction = Places API (New). Pasang budget alert.)
+     **Wajib dibatasi**: HTTP referrer = domain Anda, API restriction = Places API (New).)
    - `SUPPORT_WA`
    - ubah `DEMO_MODE` menjadi `false`
 4. **Jadikan akun admin**: Authentication > Users > Add user (email + password),
@@ -94,35 +99,56 @@ Semua tulis & cek PIN lewat **RPC Postgres `security definer`**. Client tidak pe
    select id from auth.users where email = 'email-anda@contoh.com';
    ```
 5. Buka `/admin`, buat batch, **unduh CSV (kode, URL, PIN)** — PIN hanya tampil sekali.
+6. **Key untuk verifikasi server**: `places_lookup()` memanggil Google dari dalam Postgres,
+   jadi butuh key yang **tidak** dibatasi HTTP referrer. Isi lewat SQL Editor:
+   ```sql
+   update public.private_config set value = 'KEY_SERVER_ANDA' where key = 'places_api_key';
+   ```
+   Key di `config.js` (browser) tetap dibatasi HTTP referrer; key server cukup dibatasi
+   API restriction = Places API (New).
 
 ## 4. Deploy (Cloudflare Pages)
 
 1. Push repo ini ke GitHub.
 2. Cloudflare Dashboard > Workers & Pages > Create > Pages > Connect to Git.
 3. Build command: **(kosong)** · Build output directory: **`public`**
-4. Setelah domain jadi (`*.pages.dev` atau domain sendiri), perbarui
-   **HTTP referrer** pada Places API key di Google Cloud agar hanya domain itu yang boleh.
+4. Tambahkan **Environment variables** (Settings > Environment variables):
+   - `SUPABASE_URL` = `https://<ref>.supabase.co`
+   - `SUPABASE_ANON_KEY` = publishable key
+5. Deploy. `public/_worker.js` otomatis aktif (advanced mode) — kartu aktif dibalas
+   `302` langsung, tanpa memuat JS di HP pelanggan.
+6. Setelah domain jadi (`*.pages.dev` atau domain sendiri), perbarui
+   **HTTP referrer** pada Places API key agar hanya domain itu yang boleh.
+
+> Uji worker lokal: `npx wrangler pages dev public` (butuh `.dev.vars`, lihat `.dev.vars.example`).
 
 ## 5. Alur & keputusan desain
 
 - Kode kartu acak 6 karakter (tanpa 0/O/1/I), bukan berurutan. URL kartu: `https://domain-anda.com/c/X7KP2Q`.
+- **Chip NFC dan QR code berisi URL yang sama persis.**
 - PIN 6 angka dicetak di belakang kartu: dipakai untuk aktivasi dan ganti bisnis.
-- Redirect memakai `location.replace` ke `https://search.google.com/local/writereview?placeid=...` dan hanya mau pindah ke domain Google tersebut.
-- Hitung tap tidak menahan redirect lebih dari 400 ms.
+- Kartu **aktif** ditangani `public/_worker.js`: satu request ke Supabase lalu `302` ke
+  `https://search.google.com/local/writereview?placeid=...`. Tidak ada JS di HP pelanggan.
+- Kartu **belum aktif** disajikan halaman `/c` (aktivasi) tanpa mengubah URL, jadi `c.html`
+  tetap bisa membaca kodenya dari path.
+- Hitungan tap dikerjakan worker di latar belakang, sengaja **tanpa dedupe / batas harian**
+  (permintaan pemilik: angka apa adanya).
 
-## 6. Daftar TODO logika (cari `TODO(logic)`)
+## 6. Status TODO
 
-```bash
-grep -rn "TODO(logic)\|TODO(next)" public
-```
+Sudah dikerjakan:
 
-Yang paling penting:
+1. Redirect milidetik → `public/_worker.js` (302 langsung).
+2. Verifikasi Place ID → `places_lookup()` + `private_config`.
+3. Landing page & halaman harga → `index.html`, `harga.html`.
+4. Rate limit `track_scan` → sengaja **tidak** dipakai (permintaan pemilik).
 
-1. **Kecepatan redirect**: saat ini redirect berjalan di browser (muat JS, baca DB, lalu pindah). Untuk milidetik, pindahkan `/c/**` ke Cloudflare Worker yang mengirim `302` langsung, dan hanya menyajikan `c.html` untuk kartu belum aktif.
-2. **Sesi pemilik**: PIN sementara disimpan di `sessionStorage` agar scaffold sederhana. Ganti dengan token sesi singkat.
-3. **Verifikasi Place ID** ke Places API (Details) sebelum disimpan, dan verifikasi ulang berkala.
-4. **Rate limit `track_scan`** (App Check / Cloudflare Turnstile) agar tidak bisa di-spam.
-5. Landing page, halaman harga/pesan, panduan "cara pakai kartu".
+Sisa yang masih terbuka:
+
+1. **Sesi pemilik**: PIN masih disimpan di `sessionStorage` agar scaffold sederhana.
+   Ganti dengan token sesi singkat kalau perlu.
+2. **Verifikasi ulang berkala** Place ID (Place ID bisa berubah).
+3. Halaman panduan "cara pakai kartu" dan halaman pesan/checkout.
 
 ## 7. Catatan NFC & kebijakan Google
 

@@ -1,2 +1,3 @@
-# Cloudflare Pages — rewrite kartu: /c/KODEKODE -> /c.html
-/c/*  /c.html  200
+# Cloudflare Pages — jaring pengaman kalau _worker.js tidak jalan.
+# Catatan: Cloudflare memakai pretty URL, jadi targetnya "/c" (bukan "/c.html").
+/c/*  /c  200

@@ -1,0 +1,9 @@
+# Halaman kartu & halaman dinamis: jangan di-cache browser/CDN.
+/c
+  Cache-Control: no-store
+/c/*
+  Cache-Control: no-store
+/kelola
+  Cache-Control: no-store
+/admin
+  Cache-Control: no-store

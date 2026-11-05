@@ -1,4 +1,5 @@
-import { $, mountDemoBar, waLink } from './ui.js';
+// Halaman pemasaran: sambungkan semua tombol WhatsApp.
+import { $$, mountDemoBar, waLink } from './ui.js';
 
 mountDemoBar();
-$('#wa-link').href = waLink();
+$$('[data-wa]').forEach((a) => { a.href = waLink(); });

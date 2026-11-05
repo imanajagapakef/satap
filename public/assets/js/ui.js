@@ -103,6 +103,7 @@ export function friendlyError(err) {
     case 'blocked': return 'Kartu ini dinonaktifkan. Silakan hubungi kami.';
     case 'already-active': return 'Kartu ini sudah aktif. Gunakan menu Kelola kartu untuk mengubahnya.';
     case 'invalid': return 'Data belum lengkap. Coba pilih tokonya lagi.';
+    case 'invalid-place': return 'Toko itu tidak ditemukan di Google. Coba cari dan pilih ulang.';
     case 'network': return 'Koneksi bermasalah. Cek internet lalu coba lagi.';
     case 'bad-login': return 'Email atau kata sandi salah.';
     case 'not-admin':

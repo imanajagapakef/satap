@@ -163,3 +163,76 @@ tr:last-child td { border-bottom: 0; }
 td.num { text-align: right; font-variant-numeric: tabular-nums; font-weight: 800; }
 td.actions { white-space: nowrap; }
 td.actions .btn + .btn { margin-left: 6px; }
+
+/* ---------- landing / halaman pemasaran ---------- */
+.topbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
+.topbar .brand { margin: 0; }
+.nav { display: flex; gap: 16px; flex-wrap: wrap; font-weight: 700; font-size: 15px; }
+.nav a { color: var(--muted); text-decoration: none; }
+.nav a:hover { color: var(--ink); }
+
+.hero { display: grid; gap: 26px; align-items: center; padding: 18px 0 8px; }
+@media (min-width: 860px) { .hero { grid-template-columns: 1.05fr 0.95fr; gap: 44px; padding: 34px 0 12px; } }
+.hero h1 { font-size: clamp(30px, 5vw, 46px); margin-bottom: 12px; }
+.hero-lead { font-size: 19px; color: var(--muted); margin-bottom: 18px; }
+.hero-cta { display: flex; gap: 12px; flex-wrap: wrap; }
+.tag { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 999px; background: var(--soft); border: 1.5px solid var(--line); font-size: 14px; font-weight: 800; margin-bottom: 12px; }
+
+.mock { background: var(--surface); border: 1.5px solid var(--line); border-radius: var(--radius); padding: 22px; box-shadow: 0 6px 0 rgba(120, 80, 40, 0.06); }
+.mock-card {
+  position: relative; border-radius: 16px; padding: 20px; color: #fff;
+  background: linear-gradient(150deg, var(--primary) 0%, var(--primary-dark) 100%);
+  box-shadow: 0 10px 24px rgba(200, 67, 31, 0.28); overflow: hidden;
+}
+.mock-card::after { content: ''; position: absolute; right: -34px; top: -34px; width: 120px; height: 120px; border-radius: 50%; background: rgba(255, 255, 255, 0.14); }
+.mock-nfc { font-size: 26px; }
+.mock-card strong { display: block; font-family: 'Fraunces', Georgia, serif; font-size: 21px; margin-top: 8px; }
+.mock-card .mock-sub { font-size: 14px; opacity: 0.85; }
+.mock-tap { display: flex; align-items: center; gap: 12px; margin-top: 18px; font-weight: 800; }
+.mock-tap .ring { width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; background: var(--soft); color: var(--primary); font-size: 20px; }
+
+.section { padding: 46px 0 6px; }
+.section > h2 { font-family: 'Fraunces', Georgia, serif; font-size: clamp(22px, 3.4vw, 30px); margin-bottom: 8px; }
+.section-lead { color: var(--muted); max-width: 62ch; margin-bottom: 22px; }
+
+.steps3 { display: grid; gap: 16px; counter-reset: s; }
+@media (min-width: 760px) { .steps3 { grid-template-columns: repeat(3, 1fr); } }
+.cardgrid { display: grid; gap: 16px; }
+@media (min-width: 760px) { .cardgrid-2 { grid-template-columns: repeat(2, 1fr); } }
+.feature { background: var(--surface); border: 1.5px solid var(--line); border-radius: var(--radius); padding: 20px; box-shadow: 0 6px 0 rgba(120, 80, 40, 0.06); }
+.feature .ico { font-size: 28px; line-height: 1.2; }
+.feature .num { display: inline-grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: var(--primary); color: #fff; font-weight: 800; }
+.feature h3 { margin: 10px 0 6px; font-size: 18px; }
+.feature p { margin: 0; color: var(--muted); font-size: 15px; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.chips .tag { margin: 0; }
+
+.pricing { display: grid; gap: 18px; align-items: stretch; }
+@media (min-width: 820px) { .pricing { grid-template-columns: repeat(3, 1fr); } }
+.plan { position: relative; display: flex; flex-direction: column; background: var(--surface); border: 1.5px solid var(--line); border-radius: var(--radius); padding: 24px 22px; box-shadow: 0 6px 0 rgba(120, 80, 40, 0.06); }
+.plan.is-pop { border-color: var(--primary); border-width: 2px; box-shadow: 0 8px 0 rgba(200, 67, 31, 0.18); }
+.plan-badge { position: absolute; top: -13px; left: 22px; background: var(--primary); color: #fff; font-size: 12px; font-weight: 800; padding: 4px 12px; border-radius: 999px; }
+.plan h3 { margin: 0 0 2px; font-size: 19px; }
+.plan .plan-for { color: var(--muted); font-size: 14px; margin: 0 0 10px; }
+.plan-price { font-family: 'Fraunces', Georgia, serif; font-size: 36px; font-weight: 700; color: var(--primary); line-height: 1.1; }
+.plan-price small { display: block; font-family: 'Nunito', system-ui, sans-serif; font-size: 14px; color: var(--muted); font-weight: 700; }
+.plan ul { list-style: none; padding: 0; margin: 16px 0 20px; display: grid; gap: 9px; font-size: 15px; }
+.plan li { display: flex; gap: 9px; align-items: flex-start; }
+.plan li::before { content: '✓'; color: var(--ok); font-weight: 800; }
+.plan .btn { margin-top: auto; }
+.pricing-single { grid-template-columns: minmax(0, 520px); justify-content: center; }
+
+.faq { display: grid; gap: 10px; }
+.faq details { background: var(--surface); border: 1.5px solid var(--line); border-radius: 14px; padding: 14px 18px; }
+.faq summary { font-weight: 800; cursor: pointer; }
+.faq summary::marker { color: var(--primary); }
+.faq details p { margin: 10px 0 0; color: var(--muted); font-size: 15px; }
+
+.cta-band { margin-top: 46px; padding: 28px 22px; border-radius: var(--radius); background: var(--soft); border: 1.5px dashed #E8C9A0; text-align: center; }
+.cta-band h2 { font-family: 'Fraunces', Georgia, serif; }
+.cta-band .row { justify-content: center; margin-top: 14px; }
+
+.footer { margin-top: 52px; padding-top: 22px; border-top: 1.5px solid var(--line); color: var(--muted); font-size: 15px; display: flex; gap: 14px; flex-wrap: wrap; justify-content: space-between; align-items: center; }
+.footer nav { display: flex; gap: 14px; flex-wrap: wrap; }
+.footer a { color: var(--muted); }
