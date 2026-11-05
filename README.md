@@ -113,6 +113,19 @@ Semua tulis & cek PIN lewat **RPC Postgres `security definer`**. Client tidak pe
    Key di `config.js` (browser) tetap dibatasi HTTP referrer; key server cukup dibatasi
    API restriction = Places API (New).
 
+## 3b. Catatan Security Advisor
+
+Supabase akan menandai beberapa hal yang **memang disengaja** di project ini:
+
+| Peringatan | Status |
+|---|---|
+| `rls_enabled_no_policy` pada `card_secrets` & `private_config` | **Disengaja** — tabel ini harus tertutup total untuk client |
+| `anon/authenticated_security_definer_function_executable` | **Disengaja** — RPC publik (`public_card`, `verify_owner`, dst) memang untuk anon, dilindungi PIN + RLS |
+| `auth_leaked_password_protection` | **Perlu diaktifkan** — Dashboard > Authentication > Settings > *Prevent use of leaked passwords* |
+
+> Catatan: setting ini milik GoTrue dan **tidak tersimpan di database**, jadi tidak bisa
+> diubah lewat SQL — harus dari Dashboard (atau Management API dengan Personal Access Token).
+
 ## 4. Deploy (Cloudflare Pages)
 
 1. Push repo ini ke GitHub.

@@ -1,3 +1,5 @@
+# Cloudflare Pages — header untuk situs Satap
+
 # Halaman kartu & halaman dinamis: jangan di-cache browser/CDN.
 /c
   Cache-Control: no-store
@@ -7,3 +9,11 @@
   Cache-Control: no-store
 /admin
   Cache-Control: no-store
+
+# Header keamanan untuk semua aset.
+# Tidak pakai CSP dulu supaya tidak memblokir Google Fonts / esm.sh / Places API.
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: DENY
+  Permissions-Policy: geolocation=(), microphone=(), payment=(), usb=()
