@@ -177,7 +177,7 @@ h2 { font-weight: 800; }
   cursor: pointer;
   perspective: 1400px;
   -webkit-tap-highlight-color: transparent;
-  border-radius: var(--radius);
+  border-radius: 22px;
 }
 .flip:focus-visible { outline: 3px solid rgba(14, 107, 77, 0.45); outline-offset: 4px; }
 
@@ -189,21 +189,43 @@ h2 { font-weight: 800; }
 .flip.is-flipped .flip-inner { transform: rotateY(180deg); }
 
 .flip-face {
+  position: relative;
+  overflow: hidden;
   grid-area: 1 / 1;
   display: flex;
   flex-direction: column;
-  padding: 24px 24px 22px;
-  border-radius: var(--radius);
-  border: 1.5px solid var(--line);
+  padding: 26px 26px 24px;
+  border-radius: 22px;
+  border: 1px solid var(--line);
   background: var(--surface);
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
+  box-shadow: 0 1px 2px rgba(0, 32, 24, 0.04), 0 20px 34px -26px rgba(0, 32, 24, 0.3);
 }
+/* sisi "cara biasa": abu netral + tanda silang samar */
+.flip-front {
+  background-color: var(--surface);
+  background-image: radial-gradient(190px 190px at 100% 0%, rgba(0, 32, 24, 0.07), rgba(0, 32, 24, 0) 70%);
+}
+/* sisi "dengan Satap": hijau muda + pendar lime */
 .flip-back {
   transform: rotateY(180deg);
-  background: #F3FAE7;
+  background-color: #F3FAE7;
+  background-image: radial-gradient(200px 200px at 100% 0%, rgba(192, 248, 80, 0.6), rgba(192, 248, 80, 0) 72%);
   border-color: #D8EFA8;
 }
+
+/* tanda besar samar sebagai hiasan sudut */
+.flip-mark {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: 88px;
+  height: 88px;
+  color: rgba(0, 32, 24, 0.055);
+  pointer-events: none;
+}
+.flip-back .flip-mark { color: rgba(14, 107, 77, 0.1); }
 
 .flip-kicker {
   font-size: 0.72rem;
@@ -238,12 +260,20 @@ h2 { font-weight: 800; }
   display: inline-flex;
   align-items: center;
   gap: 7px;
+  align-self: flex-start;
   margin-top: 18px;
+  padding: 7px 13px;
+  border-radius: 999px;
+  background: var(--soft);
+  border: 1px solid rgba(14, 107, 77, 0.16);
   color: var(--primary);
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   font-weight: 800;
 }
+.flip-back .flip-hint { background: #FFFFFF; border-color: rgba(14, 107, 77, 0.14); }
 .flip-hint .ic { width: 15px; height: 15px; }
+.flip:hover .flip-front { border-color: #D9DDD6; }
+.flip:hover .flip-back { border-color: #C8E68F; }
 
 @media (prefers-reduced-motion: reduce) {
   .flip-inner { transition: none; }
@@ -253,10 +283,21 @@ h2 { font-weight: 800; }
 .usecases { display: grid; gap: 12px; margin-top: 22px; }
 @media (min-width: 700px) { .usecases { grid-template-columns: 1fr 1fr; } }
 .usecase {
-  padding: 18px 20px;
+  position: relative;
+  padding: 18px 20px 18px 26px;
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: 18px;
+}
+.usecase::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 18px;
+  bottom: 18px;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: var(--accent);
 }
 .usecase b { display: block; font-size: 15px; margin-bottom: 3px; }
 .usecase span { color: var(--muted); font-size: 14px; }
@@ -265,6 +306,221 @@ h2 { font-weight: 800; }
 .mock { padding: 0; border: 0; background: transparent; box-shadow: none; }
 .hero-art { display: block; width: 100%; height: auto; }
 .hero-art text { font-family: 'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif; }
+
+/* ---------- animasi hero ----------
+   Satu putaran 12 detik yang bercerita sendiri:
+     1) kartu siap di meja kasir (mengambang pelan)
+     2) pelanggan menempelkan HP -> HP sedikit tersentak, gelombang tap
+        memancar dari balik tepi HP, layar berkilat limau lembut
+     3) layar berganti: formulir ulasan Google terbuka, bintang menyala
+        satu per satu, tombol Kirim berdenyut  ->  ulang.
+   Keterangan (caption) dan titik langkah di bawah gambar berganti mengikuti
+   fase tanpa jeda kosong, supaya calon pembeli langsung paham alurnya. */
+.hero-art .hero-card,
+.hero-art .scr,
+.hero-art .tw,
+.hero-art .scr-flash,
+.hero-art .hero-phone,
+.hero-art .st,
+.hero-art .ln,
+.hero-art .kirim { will-change: opacity, transform; }
+
+.hero-art .hero-card {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: heroCard 12s cubic-bezier(0.4, 0.05, 0.3, 1) infinite;
+}
+.hero-art .hero-phone {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: heroPhone 12s cubic-bezier(0.4, 0.05, 0.3, 1) infinite;
+}
+.hero-art .scr-a { animation: heroScrA 12s ease-in-out infinite; }
+.hero-art .scr-b { animation: heroScrB 12s cubic-bezier(0.22, 0.61, 0.36, 1) infinite; }
+.hero-art .scr-flash { animation: heroFlash 12s ease-out infinite; }
+.hero-art .tw { transform-box: fill-box; transform-origin: center; }
+.hero-art .tw-1 { animation: heroTw1 12s ease-out infinite; }
+.hero-art .tw-2 { animation: heroTw2 12s ease-out infinite; }
+.hero-art .tw-3 { animation: heroTw3 12s ease-out infinite; }
+.hero-art .st { transform-box: fill-box; transform-origin: center; opacity: 0; animation: heroStar 12s ease-out infinite; }
+.hero-art .st-2 { animation-delay: 0.16s; }
+.hero-art .st-3 { animation-delay: 0.32s; }
+.hero-art .st-4 { animation-delay: 0.48s; }
+.hero-art .st-5 { animation-delay: 0.64s; }
+.hero-art .ln { transform-box: fill-box; transform-origin: left center; opacity: 0; animation: heroLine 12s ease-out infinite; }
+.hero-art .ln-2 { animation-delay: 0.14s; }
+.hero-art .ln-3 { animation-delay: 0.28s; }
+.hero-art .kirim { transform-box: fill-box; transform-origin: center; animation: heroKirim 12s ease-in-out infinite; }
+
+/* kartu: mengambang -> meluncur & menyelip ke balik HP -> ditarik kembali */
+@keyframes heroCard {
+  0%        { transform: translate(0, 0); }
+  6%        { transform: translate(0, -6px); }
+  12%       { transform: translate(0, 0); }
+  18.33%    { transform: translate(0, 0); }
+  21.67%    { transform: translate(8px, -12px); }
+  28.33%    { transform: translate(46px, -30px); }
+  32%       { transform: translate(46px, -30px); }
+  40%       { transform: translate(6px, -4px); }
+  45%       { transform: translate(0, 2px); }
+  48%, 100% { transform: translate(0, 0); }
+}
+/* HP tersentak kecil saat kartu menempel */
+@keyframes heroPhone {
+  0%, 28.33%  { transform: translate(0, 0); }
+  30%         { transform: translate(5px, 0); }
+  32.5%, 100% { transform: translate(0, 0); }
+}
+/* layar menunggu <-> formulir ulasan */
+@keyframes heroScrA {
+  0%, 28.33%  { opacity: 1; }
+  33.33%, 80% { opacity: 0; }
+  84%, 100%   { opacity: 1; }
+}
+@keyframes heroScrB {
+  0%, 31.67%   { opacity: 0; transform: translateY(12px); }
+  36.67%       { opacity: 1; transform: translateY(0); }
+  80%          { opacity: 1; transform: translateY(0); }
+  84%, 100%    { opacity: 0; transform: translateY(12px); }
+}
+/* kilatan limau lembut saat kartu menempel */
+@keyframes heroFlash {
+  0%, 27.9%   { opacity: 0; }
+  29.5%       { opacity: 0.55; }
+  32.5%, 100% { opacity: 0; }
+}
+/* gelombang tap dari balik tepi HP */
+@keyframes heroTw1 {
+  0%, 28.33% { opacity: 0; transform: scale(0.4); }
+  30%        { opacity: 0.95; }
+  36%        { opacity: 0; transform: scale(2.2); }
+  100%       { opacity: 0; transform: scale(0.4); }
+}
+@keyframes heroTw2 {
+  0%, 29%    { opacity: 0; transform: scale(0.4); }
+  31%        { opacity: 0.75; }
+  38%        { opacity: 0; transform: scale(2.8); }
+  100%       { opacity: 0; transform: scale(0.4); }
+}
+@keyframes heroTw3 {
+  0%, 29.8%  { opacity: 0; transform: scale(0.4); }
+  32%        { opacity: 0.55; }
+  41%        { opacity: 0; transform: scale(3.4); }
+  100%       { opacity: 0; transform: scale(0.4); }
+}
+/* bintang ulasan menyala satu per satu */
+@keyframes heroStar {
+  0%, 35.5% { opacity: 0; transform: scale(0.4); }
+  37.5%     { opacity: 1; transform: scale(1.16); }
+  40%       { opacity: 1; transform: scale(1); }
+  78%       { opacity: 1; transform: scale(1); }
+  82%, 100% { opacity: 0; transform: scale(0.4); }
+}
+/* teks ulasan tumbuh */
+@keyframes heroLine {
+  0%, 41%   { opacity: 0; transform: scaleX(0.1); }
+  45%       { opacity: 1; transform: scaleX(1); }
+  78%       { opacity: 1; transform: scaleX(1); }
+  82%, 100% { opacity: 0; transform: scaleX(0.1); }
+}
+/* tombol kirim berdenyut pelan */
+@keyframes heroKirim {
+  0%, 52%     { transform: scale(1); }
+  54%         { transform: scale(1.05); }
+  56.5%       { transform: scale(1); }
+  59%         { transform: scale(1.05); }
+  61.5%, 100% { transform: scale(1); }
+}
+
+/* keterangan + titik langkah di bawah ilustrasi */
+.hero-narration { margin-top: 8px; }
+.hero-caps { display: grid; }
+.hero-cap {
+  grid-area: 1 / 1;
+  justify-self: center;
+  max-width: 100%;
+  padding: 7px 15px;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: 0 1px 2px rgba(0, 32, 24, 0.04), 0 12px 22px -18px rgba(0, 32, 24, 0.4);
+  color: var(--primary);
+  font-size: 0.92rem;
+  font-weight: 800;
+  text-align: center;
+  animation-duration: 12s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+.cap-a { animation-name: capA; }
+.cap-b { animation-name: capB; }
+.cap-c { animation-name: capC; }
+.hero-dots { display: flex; gap: 7px; justify-content: center; margin-top: 12px; }
+.hero-dots i {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #CDD6D1;
+  animation-duration: 12s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+.dot-1 { animation-name: dot1; }
+.dot-2 { animation-name: dot2; }
+.dot-3 { animation-name: dot3; }
+
+@keyframes capA {
+  0%, 19%      { opacity: 1; transform: translateY(0); }
+  20.5%, 82.5% { opacity: 0; transform: translateY(6px); }
+  84.5%, 100%  { opacity: 1; transform: translateY(0); }
+}
+@keyframes capB {
+  0%, 20.5%    { opacity: 0; transform: translateY(6px); }
+  22%, 33%     { opacity: 1; transform: translateY(0); }
+  34%, 100%    { opacity: 0; transform: translateY(6px); }
+}
+@keyframes capC {
+  0%, 34%      { opacity: 0; transform: translateY(6px); }
+  35.5%, 81%   { opacity: 1; transform: translateY(0); }
+  82.5%, 100%  { opacity: 0; transform: translateY(6px); }
+}
+@keyframes dot1 {
+  0%, 19%      { background: var(--primary); transform: scale(1.25); }
+  21%, 82%     { background: #CDD6D1; transform: scale(1); }
+  84.5%, 100%  { background: var(--primary); transform: scale(1.25); }
+}
+@keyframes dot2 {
+  0%, 20.5%    { background: #CDD6D1; transform: scale(1); }
+  22%, 33%     { background: var(--primary); transform: scale(1.25); }
+  34%, 100%    { background: #CDD6D1; transform: scale(1); }
+}
+@keyframes dot3 {
+  0%, 34%      { background: #CDD6D1; transform: scale(1); }
+  35.5%, 81%   { background: var(--primary); transform: scale(1.25); }
+  82.5%, 100%  { background: #CDD6D1; transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-art .hero-card,
+  .hero-art .scr,
+  .hero-art .tw,
+  .hero-art .scr-flash,
+  .hero-art .hero-phone,
+  .hero-art .st,
+  .hero-art .ln,
+  .hero-art .kirim,
+  .hero-cap,
+  .hero-dots i { animation: none; }
+  .hero-art .scr-a { opacity: 0; }
+  .hero-art .scr-b { opacity: 1; transform: none; }
+  .hero-art .tw,
+  .hero-art .scr-flash { opacity: 0; }
+  .hero-art .st,
+  .hero-art .ln { opacity: 1; }
+  .hero-art .ln { transform: none; }
+  .cap-a, .cap-b { opacity: 0; }
+  .cap-c { opacity: 1; }
+  .hero-dots { display: none; }
+}
 
 /* ---------- janji / integritas ---------- */
 .promise {
@@ -305,20 +561,50 @@ h2 { font-weight: 800; }
 .order span { color: var(--muted); font-size: 0.9rem; }
 
 /* ---------- kartu section: langkah & fitur ----------
-   Kartu putih, sudut besar, border tipis, bayangan lembut.
-   Langkah pakai lencana angka bulat gelap; fitur pakai kotak ikon mint. */
+   Kartu putih, sudut besar, border tipis, bayangan lembut, dan pendar
+   warna di satu sudut biar tidak terasa kosong.
+   Langkah: pendar lime di kanan atas + lencana angka bulat gelap.
+   Fitur:   pendar hijau di kiri atas + kotak ikon mint. */
 .steps3 { gap: 20px; }
 .cardgrid { gap: 20px; }
 
 .feature {
+  position: relative;
   height: 100%;
   display: flex;
   flex-direction: column;
-  background: var(--surface);
+  background-color: var(--surface);
   border: 1px solid var(--line);
   border-radius: 22px;
   padding: 28px 26px;
   box-shadow: 0 1px 2px rgba(0, 32, 24, 0.04), 0 20px 34px -26px rgba(0, 32, 24, 0.3);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+.feature:hover {
+  transform: translateY(-3px);
+  border-color: #DCEBC7;
+  box-shadow: 0 1px 2px rgba(0, 32, 24, 0.05), 0 28px 42px -26px rgba(0, 32, 24, 0.42);
+}
+
+/* pendar sudut */
+.steps3 .feature {
+  background-image: radial-gradient(150px 150px at 100% 0%, rgba(192, 248, 80, 0.38), rgba(192, 248, 80, 0) 72%);
+}
+.cardgrid .feature {
+  background-image: radial-gradient(180px 180px at 0% 0%, rgba(14, 107, 77, 0.1), rgba(14, 107, 77, 0) 70%);
+}
+
+/* garis putus-putus penyambung antar langkah (hanya desktop) */
+@media (min-width: 760px) {
+  .steps3 .feature:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 49px;
+    right: -15px;
+    width: 30px;
+    height: 2px;
+    background-image: repeating-linear-gradient(90deg, #CFE3A6 0 5px, transparent 5px 11px);
+  }
 }
 
 .feature .num {
@@ -327,6 +613,7 @@ h2 { font-weight: 800; }
   background: var(--ink);
   color: #fff;
   font-size: 1.05rem;
+  box-shadow: 0 0 0 6px rgba(192, 248, 80, 0.32);
 }
 
 .feature .ico {
@@ -337,6 +624,7 @@ h2 { font-weight: 800; }
   color: var(--primary);
   display: inline-grid;
   place-items: center;
+  box-shadow: 0 0 0 6px rgba(14, 107, 77, 0.07);
 }
 .feature .ico .ic { width: 22px; height: 22px; }
 
