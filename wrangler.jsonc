@@ -1,0 +1,16 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "satap",
+  "main": "src/worker.js",
+  "compatibility_date": "2026-11-04",
+  "observability": { "enabled": true },
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "run_worker_first": true
+  },
+  "vars": {
+    "SUPABASE_URL": "https://hgoexsrivadbtngydnon.supabase.co",
+    "SUPABASE_ANON_KEY": "sb_publishable_mKY_7cXC6Q5XL63P0djnvw_UZZVyedc"
+  }
+}

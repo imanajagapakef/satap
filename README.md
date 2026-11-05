@@ -3,20 +3,19 @@
 Kartu NFC/QR yang sekali tap langsung membuka formulir ulasan Google toko. Tema hangat untuk UMKM, tanpa build step: HTML + CSS + JavaScript (ES modules).
 
 - **Database & backend**: Supabase (Postgres + RPC + Auth)
-- **Hosting**: Cloudflare Pages (+ `_worker.js` untuk redirect kilat)
+- **Hosting**: Cloudflare Workers + static assets (`src/worker.js` untuk redirect kilat)
 - **Pencarian bisnis**: Google Places API (New)
 
 ## Struktur
 
 ```
-public/                       <- Cloudflare Pages (root statis)
+public/                       <- aset statis (di-upload sebagai Workers assets)
   index.html                  landing page
   harga.html                  halaman harga
   c.html                      /c/{kode}: aktivasi 3 langkah | error
   kelola.html                 dashboard pemilik (kode kartu + PIN)
   admin.html                  admin: buat batch, ekspor CSV, blokir
   404.html
-  _worker.js                  redirect 302 milidetik untuk kartu aktif
   _redirects                  jaring pengaman /c/* -> /c
   _headers                    no-store untuk halaman kartu
   assets/css/style.css        gaya dasar + design token (semua halaman)
@@ -30,6 +29,8 @@ public/                       <- Cloudflare Pages (root statis)
     picker.js                 komponen "cari nama bisnis"
     ui.js                     helper (toast, view, copy, pesan error ramah)
     card.js kelola.js admin.js landing.js
+src/
+  worker.js                   redirect 302 milidetik untuk kartu aktif (Workers)
 supabase/
   migrations/                 skema + RLS + RPC (sumber kebenaran backend)
     0001_ulasin.sql              tabel + RLS + RPC dasar
@@ -56,7 +57,7 @@ python -m http.server 3000 --directory public     # atau: npx serve public
 | Kelola | `/kelola.html` | `DEMO02` / `654321` |
 | Admin | `/admin.html` | sandi `admin` |
 
-Di produksi alamat kartu adalah `/c/KODE` (ditangani `_worker.js`). Di server statis biasa pakai `?c=KODE`.
+Di produksi alamat kartu adalah `/c/KODE` (ditangani `src/worker.js`). Di server statis biasa pakai `?c=KODE`.
 
 Reset data demo: hapus localStorage key `ulasin_demo_v1`.
 
@@ -126,27 +127,40 @@ Supabase akan menandai beberapa hal yang **memang disengaja** di project ini:
 > Catatan: setting ini milik GoTrue dan **tidak tersimpan di database**, jadi tidak bisa
 > diubah lewat SQL — harus dari Dashboard (atau Management API dengan Personal Access Token).
 
-## 4. Deploy (Cloudflare Pages)
+## 4. Deploy (Cloudflare Workers + static assets)
 
-1. Push repo ini ke GitHub.
-2. Cloudflare Dashboard > Workers & Pages > Create > Pages > Connect to Git.
-3. Build command: **(kosong)** · Build output directory: **`public`**
-4. Tambahkan **Environment variables** (Settings > Environment variables):
-   - `SUPABASE_URL` = `https://<ref>.supabase.co`
-   - `SUPABASE_ANON_KEY` = publishable key
-5. Deploy. `public/_worker.js` otomatis aktif (advanced mode) — kartu aktif dibalas
-   `302` langsung, tanpa memuat JS di HP pelanggan.
-6. Setelah domain jadi (`*.pages.dev` atau domain sendiri), perbarui
-   **HTTP referrer** pada Places API key agar hanya domain itu yang boleh.
+> Cloudflare sudah menggabungkan Pages ke Workers. Project ini memakai model
+> **Workers + static assets**: `public/` tetap statis, `src/worker.js` menangani redirect.
+> Konfigurasinya ada di `wrangler.jsonc`.
 
-> Uji worker lokal: `npx wrangler pages dev public` (butuh `.dev.vars`, lihat `.dev.vars.example`).
+1. Install & login:
+   ```bash
+   npm i -g wrangler
+   wrangler login
+   ```
+2. Deploy:
+   ```bash
+   wrangler deploy
+   ```
+   Hasilnya: `https://satap.<subdomain>.workers.dev`
+3. `SUPABASE_URL` dan `SUPABASE_ANON_KEY` sudah ditulis di `wrangler.jsonc` bagian `vars`.
+   Kalau mau diubah tanpa commit: `wrangler secret put NAMA_VARIABEL`.
+4. Uji lokal: `wrangler dev` (memakai `.dev.vars`, lihat `.dev.vars.example`).
+5. Setelah domain final, perbarui **HTTP referrer** pada Places API key (browser)
+   agar hanya domain itu yang boleh.
+
+### Kenapa `run_worker_first: true`
+
+Tanpa opsi ini, aset statis dilayani **lebih dulu** sehingga `/c/KODE` tidak pernah
+sampai ke worker dan redirect `302` tidak jalan. Dengan `run_worker_first: true`,
+worker dievaluasi dulu; kalau bukan `/c/...`, ia menyerahkan ke `env.ASSETS`.
 
 ## 5. Alur & keputusan desain
 
 - Kode kartu acak 6 karakter (tanpa 0/O/1/I), bukan berurutan. URL kartu: `https://domain-anda.com/c/X7KP2Q`.
 - **Chip NFC dan QR code berisi URL yang sama persis.**
 - PIN 6 angka dicetak di belakang kartu: dipakai untuk aktivasi dan ganti bisnis.
-- Kartu **aktif** ditangani `public/_worker.js`: satu request ke Supabase lalu `302` ke
+- Kartu **aktif** ditangani `src/worker.js`: satu request ke Supabase lalu `302` ke
   `https://search.google.com/local/writereview?placeid=...`. Tidak ada JS di HP pelanggan.
 - Kartu **belum aktif** disajikan halaman `/c` (aktivasi) tanpa mengubah URL, jadi `c.html`
   tetap bisa membaca kodenya dari path.
@@ -157,7 +171,7 @@ Supabase akan menandai beberapa hal yang **memang disengaja** di project ini:
 
 Sudah dikerjakan:
 
-1. Redirect milidetik → `public/_worker.js` (302 langsung).
+1. Redirect milidetik → `src/worker.js` (302 langsung).
 2. Verifikasi Place ID → `places_lookup()` + `private_config`.
 3. Landing page & halaman harga → `index.html`, `harga.html`.
 4. Rate limit `track_scan` → sengaja **tidak** dipakai (permintaan pemilik).
