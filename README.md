@@ -155,6 +155,27 @@ Tanpa opsi ini, aset statis dilayani **lebih dulu** sehingga `/c/KODE` tidak per
 sampai ke worker dan redirect `302` tidak jalan. Dengan `run_worker_first: true`,
 worker dievaluasi dulu; kalau bukan `/c/...`, ia menyerahkan ke `env.ASSETS`.
 
+## 4b. Soal Places API key (penting)
+
+Ada **satu key** yang dipakai di dua tempat:
+
+| Pemakai | Butuh restriction apa |
+|---|---|
+| Browser (`config.js`) — autocomplete | **HTTP referrer** = domain situs |
+| Server (`private_config`) — verifikasi Place ID saat aktivasi | **Application restriction = None** |
+
+Kalau satu key dipakai untuk keduanya lalu di-restrict ke referrer, panggilan dari
+server akan ditolak. Karena itu sebaiknya buat **dua key** di project GCP yang sama,
+lalu isi yang server:
+
+```sql
+update public.private_config set value = 'KEY_SERVER' where key = 'places_api_key';
+```
+
+Sejak migrasi **0009**, kalau key server bermasalah (dibatasi/dicabut), aktivasi
+**tidak ikut mati** — sistem memakai data dari client. Tapi Place ID yang memang
+tidak ada di Google **tetap ditolak**.
+
 ## 5. Alur & keputusan desain
 
 - Kode kartu acak 6 karakter (tanpa 0/O/1/I), bukan berurutan. URL kartu: `https://domain-anda.com/c/X7KP2Q`.
