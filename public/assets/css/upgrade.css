@@ -193,6 +193,23 @@ h2 { font-weight: 800; }
   mask: var(--ic-check) center / contain no-repeat;
 }
 
+/* ---------- contoh penggunaan ---------- */
+.usecases { display: grid; gap: 12px; margin-top: 22px; }
+@media (min-width: 700px) { .usecases { grid-template-columns: 1fr 1fr; } }
+.usecase {
+  padding: 16px 18px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+.usecase b { display: block; font-size: 15px; margin-bottom: 3px; }
+.usecase span { color: var(--muted); font-size: 14px; }
+
+/* ---------- ilustrasi hero ---------- */
+.mock { padding: 0; border: 0; background: transparent; box-shadow: none; }
+.hero-art { display: block; width: 100%; height: auto; }
+.hero-art text { font-family: 'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif; }
+
 /* ---------- janji / integritas ---------- */
 .promise {
   display: flex;
