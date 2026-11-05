@@ -215,7 +215,7 @@ td.actions .btn + .btn { margin-left: 6px; }
 .cardgrid { display: grid; gap: 16px; }
 @media (min-width: 760px) { .cardgrid-2 { grid-template-columns: repeat(2, 1fr); } }
 .feature { background: var(--surface); border: 1.5px solid var(--line); border-radius: var(--radius); padding: 20px; box-shadow: 0 6px 0 rgba(120, 80, 40, 0.06); }
-.feature .ico { font-size: 28px; line-height: 1.2; }
+.feature .ico { font-size: 30px; line-height: 1.2; }
 .feature .num { display: inline-grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: var(--primary); color: #fff; font-weight: 800; }
 .feature h3 { margin: 10px 0 6px; font-size: 18px; }
 .feature p { margin: 0; color: var(--muted); font-size: 15px; }
@@ -233,9 +233,9 @@ td.actions .btn + .btn { margin-left: 6px; }
 .plan-price { font-family: 'Fraunces', Georgia, serif; font-size: 36px; font-weight: 700; color: var(--primary); line-height: 1.1; }
 .plan-price small { display: block; font-family: 'Nunito', system-ui, sans-serif; font-size: 14px; color: var(--muted); font-weight: 700; }
 .plan ul { list-style: none; padding: 0; margin: 16px 0 20px; display: grid; gap: 9px; font-size: 15px; }
-.plan li { display: flex; gap: 9px; align-items: flex-start; }
+.plan li { display: flex; gap: 10px; align-items: flex-start; }
 .plan li::before {
-  content: ''; flex: 0 0 auto; width: 1.05em; height: 1.05em; margin-top: 0.16em;
+  content: ''; flex: 0 0 auto; width: 1.15em; height: 1.15em; margin-top: 0.13em;
   background: var(--ok);
   -webkit-mask: var(--ic-check) center / contain no-repeat;
   mask: var(--ic-check) center / contain no-repeat;
