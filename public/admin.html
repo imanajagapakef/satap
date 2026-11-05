@@ -9,7 +9,7 @@
   <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 <body>
@@ -18,12 +18,13 @@
 
   <section data-view="loading" class="center stack">
     <div class="spinner big" aria-hidden="true"></div>
-    <p class="muted" role="status">Memuat…</p>
+    <p class="muted" role="status">Memuat...</p>
   </section>
 
   <!-- Login admin -->
-  <section data-view="login" hidden style="max-width:480px;margin:0 auto">
+  <section data-view="login" hidden class="auth">
     <div class="card stack">
+      <span class="auth-badge" aria-hidden="true"><svg class="ic"><use href="/assets/icons.svg#shield-check"></use></svg></span>
       <div>
         <h1>Masuk admin</h1>
         <p class="muted">Khusus pengelola Satap.</p>
@@ -42,24 +43,32 @@
       </form>
       <p class="hint" data-demo-only hidden>Demo: kata sandi = admin</p>
     </div>
+    <p class="auth-foot"><a href="/">Kembali ke beranda</a></p>
   </section>
 
   <!-- Aplikasi admin -->
   <section data-view="app" hidden class="stack">
-    <div class="row between">
-      <h1>Admin Satap</h1>
+    <div class="pagehead">
+      <div>
+        <span class="eyebrow">Panel admin</span>
+        <h1>Kartu Satap</h1>
+      </div>
       <button id="a-logout" type="button" class="btn btn-ghost btn-sm">Keluar</button>
     </div>
 
     <div class="grid grid-4">
-      <div class="card stat"><p class="muted">Total kartu</p><p class="stat-num" id="s-total">0</p></div>
-      <div class="card stat"><p class="muted">Aktif</p><p class="stat-num" id="s-active">0</p></div>
-      <div class="card stat"><p class="muted">Belum aktif</p><p class="stat-num" id="s-idle">0</p></div>
-      <div class="card stat"><p class="muted">Total tap</p><p class="stat-num" id="s-scans">0</p></div>
+      <div class="card stat"><p class="stat-label">Total kartu</p><p class="stat-num" id="s-total">0</p></div>
+      <div class="card stat"><p class="stat-label">Aktif</p><p class="stat-num" id="s-active">0</p></div>
+      <div class="card stat"><p class="stat-label">Belum aktif</p><p class="stat-num" id="s-idle">0</p></div>
+      <div class="card stat"><p class="stat-label">Total tap</p><p class="stat-num" id="s-scans">0</p></div>
     </div>
 
     <div class="card stack">
-      <h2>Buat batch kartu baru</h2>
+      <div class="cardhead">
+        <span class="cardhead-ic" aria-hidden="true"><svg class="ic"><use href="/assets/icons.svg#qr-code"></use></svg></span>
+        <h2>Buat batch kartu baru</h2>
+      </div>
+      <p class="muted" style="margin:0">PIN dibuat otomatis dan hanya ditampilkan sekali. Unduh CSV-nya sebelum menutup halaman.</p>
       <form id="gen-form" novalidate class="row form-row">
         <div>
           <label class="label" for="g-count">Jumlah</label>
@@ -74,15 +83,18 @@
       <p class="field-error" id="g-error" role="alert"></p>
       <div id="g-result" class="note stack" hidden>
         <strong id="g-result-text"></strong>
-        <p style="margin:0">Unduh CSV-nya sekarang untuk mengisi chip NFC. PIN hanya tampil sekali dan tidak bisa dilihat lagi setelah halaman ini ditutup.</p>
+        <p style="margin:0">Unduh CSV-nya sekarang untuk mengisi chip NFC dan mencetak PIN. Setelah halaman ini ditutup, PIN tidak bisa dilihat lagi.</p>
         <button id="g-download" type="button" class="btn btn-primary">Unduh CSV (kode, URL, PIN)</button>
       </div>
     </div>
 
     <div class="card stack">
-      <h2>Reset PIN</h2>
+      <div class="cardhead">
+        <span class="cardhead-ic" aria-hidden="true"><svg class="ic"><use href="/assets/icons.svg#refresh-cw"></use></svg></span>
+        <h2>Reset PIN</h2>
+      </div>
       <p class="muted" style="margin:0">
-        PIN hanya disimpan sebagai hash, jadi kalau hilang harus direset.
+        PIN cuma disimpan sebagai hash, jadi kalau hilang harus direset.
         <strong>PIN lama langsung tidak berlaku</strong>, termasuk yang sudah dicetak.
       </p>
       <form id="reset-form" novalidate class="row form-row">
@@ -101,9 +113,10 @@
     </div>
 
     <div class="card stack">
-      <div class="row between">
+      <div class="cardhead">
+        <span class="cardhead-ic" aria-hidden="true"><svg class="ic"><use href="/assets/icons.svg#chart-column"></use></svg></span>
         <h2>Daftar kartu</h2>
-        <button id="a-export" type="button" class="btn btn-ghost btn-sm">Ekspor CSV</button>
+        <button id="a-export" type="button" class="btn btn-ghost btn-sm" style="margin-left:auto">Ekspor CSV</button>
       </div>
       <div class="row">
         <input id="f-q" class="input grow" type="search" placeholder="Cari kode, nama bisnis, atau batch">

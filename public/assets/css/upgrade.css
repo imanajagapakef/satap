@@ -19,10 +19,7 @@ body {
   color: var(--ink);
 }
 
-h1, h2, h3, .wordmark {
-  font-family: 'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  letter-spacing: -0.02em;
-}
+h1, h2, h3 { letter-spacing: -0.02em; }
 h1 { font-weight: 800; }
 h2 { font-weight: 800; }
 
