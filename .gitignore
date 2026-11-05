@@ -1,0 +1,16 @@
+node_modules/
+
+# env / rahasia lokal
+.env
+.env.*
+!.env.example
+service-account*.json
+
+# Supabase CLI
+.supabase/
+supabase/.temp/
+
+# OS / editor
+*.log
+.DS_Store
+Thumbs.db

@@ -1,0 +1,2 @@
+# Cloudflare Pages — rewrite kartu: /c/KODEKODE -> /c.html
+/c/*  /c.html  200

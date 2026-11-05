@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#FFF6E9">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Admin · Ulasin</title>
+  <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+<main class="shell shell-wide">
+  <a class="brand" href="/"><span class="logo" aria-hidden="true">★</span><span class="wordmark">Ulasin</span></a>
+
+  <section data-view="loading" class="center stack">
+    <div class="spinner big" aria-hidden="true"></div>
+    <p class="muted" role="status">Memuat…</p>
+  </section>
+
+  <!-- Login admin -->
+  <section data-view="login" hidden style="max-width:480px;margin:0 auto">
+    <div class="card stack">
+      <div>
+        <h1>Masuk admin</h1>
+        <p class="muted">Khusus pengelola Ulasin.</p>
+      </div>
+      <form id="login-form" novalidate class="stack">
+        <div id="al-email-row">
+          <label class="label" for="al-email">Email</label>
+          <input id="al-email" class="input" type="email" autocomplete="username" placeholder="admin@email.com">
+        </div>
+        <div>
+          <label class="label" for="al-pass">Kata sandi</label>
+          <input id="al-pass" class="input" type="password" autocomplete="current-password">
+        </div>
+        <p class="field-error" id="al-error" role="alert"></p>
+        <button id="al-btn" class="btn btn-primary btn-block" type="submit">Masuk</button>
+      </form>
+      <p class="hint" data-demo-only hidden>Demo: kata sandi = admin</p>
+    </div>
+  </section>
+
+  <!-- Aplikasi admin -->
+  <section data-view="app" hidden class="stack">
+    <div class="row between">
+      <h1>Admin Ulasin</h1>
+      <button id="a-logout" type="button" class="btn btn-ghost btn-sm">Keluar</button>
+    </div>
+
+    <div class="grid grid-4">
+      <div class="card stat"><p class="muted">Total kartu</p><p class="stat-num" id="s-total">0</p></div>
+      <div class="card stat"><p class="muted">Aktif</p><p class="stat-num" id="s-active">0</p></div>
+      <div class="card stat"><p class="muted">Belum aktif</p><p class="stat-num" id="s-idle">0</p></div>
+      <div class="card stat"><p class="muted">Total tap</p><p class="stat-num" id="s-scans">0</p></div>
+    </div>
+
+    <div class="card stack">
+      <h2>Buat batch kartu baru</h2>
+      <form id="gen-form" novalidate class="row form-row">
+        <div>
+          <label class="label" for="g-count">Jumlah</label>
+          <input id="g-count" class="input" type="number" min="1" max="500" value="50" style="width:120px">
+        </div>
+        <div class="grow">
+          <label class="label" for="g-label">Label batch (opsional)</label>
+          <input id="g-label" class="input" placeholder="mis. Batch 1 November">
+        </div>
+        <button id="g-btn" class="btn btn-primary" type="submit">Buat kartu</button>
+      </form>
+      <p class="field-error" id="g-error" role="alert"></p>
+      <div id="g-result" class="note stack" hidden>
+        <strong id="g-result-text"></strong>
+        <p style="margin:0">Unduh CSV-nya sekarang untuk mengisi chip NFC. PIN hanya tampil sekali dan tidak bisa dilihat lagi setelah halaman ini ditutup.</p>
+        <button id="g-download" type="button" class="btn btn-primary">Unduh CSV (kode, URL, PIN)</button>
+      </div>
+    </div>
+
+    <div class="card stack">
+      <div class="row between">
+        <h2>Daftar kartu</h2>
+        <button id="a-export" type="button" class="btn btn-ghost btn-sm">Ekspor CSV</button>
+      </div>
+      <div class="row">
+        <input id="f-q" class="input grow" type="search" placeholder="Cari kode, nama bisnis, atau batch">
+        <select id="f-status" class="input" style="width:auto" aria-label="Filter status">
+          <option value="">Semua status</option>
+          <option value="active">Aktif</option>
+          <option value="inactive">Belum aktif</option>
+          <option value="blocked">Diblokir</option>
+        </select>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Kode</th><th>Status</th><th>Bisnis</th><th>Tap</th><th>Batch</th><th></th></tr>
+          </thead>
+          <tbody id="a-rows"></tbody>
+        </table>
+      </div>
+      <p class="muted center" id="a-empty" hidden>Tidak ada kartu yang cocok.</p>
+    </div>
+  </section>
+</main>
+<script type="module" src="/assets/js/admin.js"></script>
+</body>
+</html>

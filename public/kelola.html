@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#FFF6E9">
+  <meta name="robots" content="noindex">
+  <title>Kelola Kartu · Ulasin</title>
+  <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+<main class="shell">
+  <a class="brand" href="/"><span class="logo" aria-hidden="true">★</span><span class="wordmark">Ulasin</span></a>
+
+  <section data-view="loading" class="center stack">
+    <div class="spinner big" aria-hidden="true"></div>
+    <p class="muted" role="status">Memuat…</p>
+  </section>
+
+  <!-- Masuk -->
+  <section data-view="login" hidden class="stack">
+    <div class="card stack">
+      <div>
+        <h1>Kelola kartu</h1>
+        <p class="muted">Masuk dengan kode kartu dan PIN Anda.</p>
+      </div>
+      <form id="login-form" novalidate class="stack">
+        <div>
+          <label class="label" for="login-code">Kode kartu</label>
+          <input id="login-code" class="input code-input" autocapitalize="characters" autocomplete="off" spellcheck="false" placeholder="Contoh: X7KP2Q">
+          <p class="hint">Kode ada di bagian belakang kartu.</p>
+        </div>
+        <div>
+          <label class="label" for="login-pin">PIN</label>
+          <input id="login-pin" class="input" type="password" inputmode="numeric" autocomplete="current-password" pattern="[0-9]*" placeholder="6 angka">
+        </div>
+        <p class="field-error" id="login-error" role="alert"></p>
+        <button class="btn btn-primary btn-block" id="login-btn" type="submit">Masuk</button>
+      </form>
+      <p class="hint" data-demo-only hidden>Demo: DEMO01 / 123456 (belum aktif) · DEMO02 / 654321 (aktif)</p>
+    </div>
+  </section>
+
+  <!-- Dashboard -->
+  <section data-view="dash" hidden class="stack">
+    <div class="row between">
+      <div>
+        <p class="eyebrow">Kartu <span class="chip" id="d-code"></span></p>
+        <h1 id="d-title"></h1>
+      </div>
+      <span id="d-badge" class="badge"></span>
+    </div>
+
+    <div id="d-inactive" class="card stack" hidden>
+      <h2>Kartu belum aktif</h2>
+      <p class="muted">Pilih toko Anda dulu supaya kartu bisa dipakai pelanggan.</p>
+      <a id="d-activate" class="btn btn-primary btn-block" href="#">Aktifkan sekarang</a>
+    </div>
+
+    <div id="d-blocked" class="card stack" hidden>
+      <h2>Kartu dinonaktifkan</h2>
+      <p class="muted">Kartu ini sedang tidak bisa dipakai. Silakan hubungi kami untuk bantuan.</p>
+      <a id="d-help" class="btn btn-ghost btn-block" target="_blank" rel="noopener" href="#">Hubungi kami via WhatsApp</a>
+    </div>
+
+    <div id="d-active" class="stack" hidden>
+      <div class="card stat">
+        <p class="muted">Kartu di-tap</p>
+        <p class="stat-num" id="d-scans">0</p>
+        <p class="muted small" id="d-last"></p>
+      </div>
+
+      <div class="card stack">
+        <h2>Tujuan ulasan</h2>
+        <div class="biz" id="d-biz"></div>
+        <a id="d-test" class="btn btn-primary btn-block" target="_blank" rel="noopener" href="#">Tes link ulasan</a>
+        <button id="d-copy-review" class="btn btn-ghost btn-block" type="button">Salin link ulasan</button>
+        <button id="d-change" class="btn btn-ghost btn-block" type="button">Ganti bisnis</button>
+      </div>
+
+      <div class="card stack">
+        <div>
+          <h2>Link kartu</h2>
+          <p class="muted small">Alamat yang tertulis di chip NFC dan QR code kartu.</p>
+        </div>
+        <code class="codebox" id="d-cardurl"></code>
+        <button id="d-copy-card" class="btn btn-ghost btn-block" type="button">Salin link kartu</button>
+      </div>
+    </div>
+
+    <button id="d-logout" class="btn btn-text btn-block" type="button">Keluar</button>
+  </section>
+
+  <!-- Ganti bisnis -->
+  <section data-view="change" hidden class="stack">
+    <div data-step="pick" class="card stack">
+      <div>
+        <h1>Ganti bisnis</h1>
+        <p class="muted">Cari toko baru. Kartu yang sama akan langsung mengarah ke sana.</p>
+      </div>
+      <div id="c-picker"></div>
+      <button id="c-cancel" type="button" class="btn btn-text btn-block">← Batal</button>
+    </div>
+
+    <div data-step="confirm" hidden class="card stack">
+      <div>
+        <h1>Ganti ke toko ini?</h1>
+        <p class="muted">Mulai sekarang pelanggan yang tap kartu akan diarahkan ke toko ini.</p>
+      </div>
+      <div class="biz" id="c-biz"></div>
+      <p class="field-error" id="c-error" role="alert"></p>
+      <button id="c-yes" type="button" class="btn btn-primary btn-block">Ya, ganti</button>
+      <button id="c-no" type="button" class="btn btn-ghost btn-block">Bukan, cari lagi</button>
+    </div>
+  </section>
+</main>
+<script type="module" src="/assets/js/kelola.js"></script>
+</body>
+</html>
