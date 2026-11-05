@@ -83,7 +83,30 @@ export function getCodeFromUrl() {
   return raw ? raw.trim().toUpperCase() : null;
 }
 
-export const waLink = () => `https://wa.me/${String(CONFIG.SUPPORT_WA).replace(/\D/g, '')}`;
+// WhatsApp: nomor dari config, dengan draft pesan yang sudah terisi.
+const waNumber = () => String(CONFIG.SUPPORT_WA).replace(/\D/g, '');
+export const waLink = (text) => {
+  const base = `https://wa.me/${waNumber()}`;
+  return text ? `${base}?text=${encodeURIComponent(text)}` : base;
+};
+
+// Draft untuk calon pembeli — tinggal isi titik-titiknya.
+export const waOrder = () =>
+  waLink(
+    'Halo Satap, saya mau pesan kartu ulasan Google.\n\n' +
+    'Nama usaha: \n' +
+    'Kota: \n' +
+    'Jumlah kartu: \n\n' +
+    'Terima kasih.'
+  );
+
+// Draft untuk pemilik kartu yang butuh bantuan.
+export const waHelp = (code) =>
+  waLink(
+    'Halo Satap, saya butuh bantuan soal kartu ulasan.\n\n' +
+    (code ? `Kode kartu: ${code}\n` : '') +
+    'Kendala: '
+  );
 
 export function mountDemoBar() {
   if (!CONFIG.DEMO_MODE) return;

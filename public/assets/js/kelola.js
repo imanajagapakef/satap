@@ -4,7 +4,7 @@ import { db } from './db.js';
 import { mountPicker } from './picker.js';
 import {
   $, esc, setView, setStep, toast, copyText, busy, friendlyError,
-  fmtNum, fmtDate, cardUrl, getCodeFromUrl, mountDemoBar, waLink,
+  fmtNum, fmtDate, cardUrl, getCodeFromUrl, mountDemoBar, waHelp,
 } from './ui.js';
 
 mountDemoBar();
@@ -21,7 +21,7 @@ const bizHtml = (name, address) =>
 // ---------- dashboard ----------
 function renderDash() {
   $('#d-code').textContent = card.code;
-  $('#d-help').href = waLink();
+  $('#d-help').href = waHelp(card.code);
 
   const badge = $('#d-badge');
   const map = { active: ['Aktif', 'badge-ok'], inactive: ['Belum aktif', 'badge-idle'], blocked: ['Dinonaktifkan', 'badge-bad'] };

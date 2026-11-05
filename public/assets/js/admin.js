@@ -15,10 +15,23 @@ const STATUS = {
 };
 
 // ---------- CSV ----------
+// Catatan kompatibilitas Excel:
+//  - pemisah ";" + baris "sep=;"  -> Excel (locale Indonesia MAUPUN English) memecah kolom dengan benar
+//  - BOM UTF-8                    -> nama bisnis beraksen tidak rusak
+//  - kolom teks ditulis ="..."    -> angka seperti PIN 042299 tetap tampil 6 digit (nol depan tidak hilang)
 const csvCell = (v) => `"${String(v ?? '').replace(/"/g, '""')}"`;
-function download(filename, headers, rows) {
-  const csv = [headers, ...rows].map((r) => r.map(csvCell).join(',')).join('\r\n');
-  const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+const csvText = (v) => `="${String(v ?? '').replace(/"/g, '')}"`;
+const CSV_SEP = ';';
+
+function download(filename, headers, rows, opts = {}) {
+  const textCols = opts.text || [];
+  const line = (cells) => cells.join(CSV_SEP);
+  const body = [
+    `sep=${CSV_SEP}`,
+    line(headers.map(csvCell)),
+    ...rows.map((r) => line(r.map((v, i) => (textCols.includes(headers[i]) ? csvText(v) : csvCell(v))))),
+  ].join('\r\n');
+  const url = URL.createObjectURL(new Blob(['\uFEFF' + body + '\r\n'], { type: 'text/csv;charset=utf-8' }));
   const a = Object.assign(document.createElement('a'), { href: url, download: filename });
   document.body.appendChild(a);
   a.click();
@@ -26,6 +39,7 @@ function download(filename, headers, rows) {
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 const stamp = () => new Date().toISOString().slice(0, 10);
+const STATUS_CSV = { active: 'Aktif', inactive: 'Belum aktif', blocked: 'Diblokir' };
 
 // ---------- tabel ----------
 function filtered() {
@@ -126,9 +140,12 @@ $('#a-rows').addEventListener('click', async (e) => {
 
 $('#a-export').addEventListener('click', () => {
   download(
-    `satap-kartu-${stamp()}.csv`,
-    ['kode', 'url', 'status', 'bisnis', 'alamat', 'scan', 'batch', 'dibuat'],
-    filtered().map((c) => [c.code, cardUrl(c.code), c.status, c.businessName, c.address, c.scanCount, c.batch, new Date(c.createdAt).toISOString()])
+    `satap-daftar-kartu-${stamp()}.csv`,
+    ['no', 'kode', 'url', 'status', 'bisnis', 'alamat', 'tap', 'batch', 'dibuat'],
+    filtered().map((c, i) => [
+      i + 1, c.code, cardUrl(c.code), STATUS_CSV[c.status] || c.status,
+      c.businessName, c.address, c.scanCount, c.batch, fmtDate(c.createdAt),
+    ])
   );
 });
 
@@ -164,7 +181,12 @@ function showPins(boxEl, textEl, label, made, text) {
 function downloadLastBatch() {
   if (!lastBatch) return;
   const slug = (lastBatch.label || 'batch').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'batch';
-  download(`satap-${slug}-${stamp()}.csv`, ['kode', 'url', 'pin'], lastBatch.rows.map((r) => [r.code, r.url, r.pin]));
+  download(
+    `satap-${slug}-${stamp()}.csv`,
+    ['no', 'kode', 'url', 'pin'],
+    lastBatch.rows.map((r, i) => [i + 1, r.code, r.url, r.pin]),
+    { text: ['pin'] }
+  );
 }
 
 $('#g-download').addEventListener('click', downloadLastBatch);

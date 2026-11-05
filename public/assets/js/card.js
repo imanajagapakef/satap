@@ -2,7 +2,7 @@
 import { CONFIG } from './config.js';
 import { db } from './db.js';
 import { mountPicker } from './picker.js';
-import { $, $$, esc, setView, setStep, busy, friendlyError, getCodeFromUrl, mountDemoBar, waLink } from './ui.js';
+import { $, $$, esc, setView, setStep, busy, friendlyError, getCodeFromUrl, mountDemoBar, waHelp } from './ui.js';
 
 mountDemoBar();
 
@@ -27,7 +27,7 @@ function showError(kind) {
   $('#err-text').textContent = e.text;
   $('#err-retry').hidden = !e.retry;
   $('#err-help').hidden = kind === 'network';
-  $('#err-help').href = waLink();
+  $('#err-help').href = waHelp(code);
   setView('error');
 }
 
