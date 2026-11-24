@@ -132,7 +132,7 @@
   <!-- 3. Aktivasi (kartu belum aktif) -->
   <section data-view="activate" hidden>
     <ol class="steps" id="steps" aria-label="Langkah aktivasi">
-      <li><span class="dot">1</span><span>PIN</span></li>
+      <li><span class="dot">1</span><span>Buat PIN</span></li>
       <li><span class="dot">2</span><span>Cari toko</span></li>
       <li><span class="dot">3</span><span>Konfirmasi</span></li>
     </ol>
@@ -145,8 +145,12 @@
       </div>
       <form id="pin-form" novalidate class="stack">
         <div>
-          <label class="label" for="pin">PIN kartu</label>
-          <input id="pin" class="input pin-input" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]*" placeholder="••••••" aria-describedby="pin-error" enterkeyhint="next">
+          <label class="label" for="pin">Buat PIN</label>
+          <input id="pin" class="input pin-input" inputmode="numeric" autocomplete="new-password" pattern="[0-9]*" placeholder="••••••" aria-describedby="pin-error" enterkeyhint="next">
+        </div>
+        <div>
+          <label class="label" for="pin2">Ulangi PIN</label>
+          <input id="pin2" class="input pin-input" inputmode="numeric" autocomplete="new-password" pattern="[0-9]*" placeholder="••••••" aria-describedby="pin-error" enterkeyhint="done">
           <p class="field-error" id="pin-error" role="alert"></p>
         </div>
         <button id="pin-next" class="btn btn-primary btn-block" type="submit">Lanjut</button>
@@ -179,7 +183,7 @@
       <p class="muted">Kartu ini sekarang mengarah ke ulasan <strong id="done-name"></strong>.</p>
       <a id="done-test" class="btn btn-primary btn-block" target="_blank" rel="noopener" href="#">Coba sekarang</a>
       <a id="done-manage" class="btn btn-ghost btn-block" href="#">Kelola kartu</a>
-      <p class="note">Simpan PIN Anda baik-baik. PIN dibutuhkan kalau nanti ingin mengganti toko.</p>
+      <p class="note">Ingat PIN yang baru kamu buat. PIN dibutuhkan kalau nanti ingin mengganti toko. Kalau lupa, hubungi kami untuk reset.</p>
     </div>
   </section>
 
@@ -205,15 +209,16 @@
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* 1. PIN: hanya angka, hapus error saat mengetik, tempel (paste) dibersihkan */
-  var pin = $('#pin'), pinErr = $('#pin-error');
-  if (pin){
-    pin.addEventListener('input', function(){
-      var clean = pin.value.replace(/\D+/g,'');
-      if (clean !== pin.value) pin.value = clean;
-      pin.removeAttribute('aria-invalid');
+  var pin = $('#pin'), pin2 = $('#pin2'), pinErr = $('#pin-error');
+  [pin, pin2].forEach(function(el){
+    if (!el) return;
+    el.addEventListener('input', function(){
+      var clean = el.value.replace(/\D+/g,'');
+      if (clean !== el.value) el.value = clean;
+      el.removeAttribute('aria-invalid');
       if (pinErr && pinErr.textContent) pinErr.textContent = '';
     });
-  }
+  });
   /* Tandai input merah bila ada pesan error */
   function watchError(errEl, inputEl){
     if (!errEl || !inputEl) return;

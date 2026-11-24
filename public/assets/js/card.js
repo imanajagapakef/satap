@@ -55,7 +55,7 @@ async function doRedirect(card) {
   setTimeout(() => { link.hidden = false; }, 3000); // cadangan kalau redirect tertahan
 }
 
-// ---------- aktivasi (kartu belum aktif) ----------
+// ---------- aktivasi / klaim (kartu belum aktif) ----------
 const STEP_NUM = { pin: 1, search: 2, confirm: 3 };
 
 function goStep(name) {
@@ -78,8 +78,10 @@ function bizHtml(p) {
 function startActivation(card) {
   $('#card-code').textContent = card.code;
   const pinInput = $('#pin');
+  const pin2 = $('#pin2');
   pinInput.maxLength = CONFIG.PIN_LENGTH;
-  $('#pin-lead').textContent = `Masukkan PIN ${CONFIG.PIN_LENGTH} angka yang tertera di bagian belakang kartu.`;
+  if (pin2) pin2.maxLength = CONFIG.PIN_LENGTH;
+  $('#pin-lead').textContent = `Buat PIN ${CONFIG.PIN_LENGTH} angka untuk kartu ini. PIN dipakai untuk mengubah toko nanti — jangan sampai lupa.`;
 
   picker = mountPicker($('#picker'), {
     onSelect: (p) => {
@@ -95,29 +97,23 @@ function startActivation(card) {
   pinInput.focus();
 }
 
+// Hanya angka. (Input ke-2 "ulangi PIN" juga dibersihkan oleh skrip di c.html.)
 $('#pin').addEventListener('input', (e) => {
   e.target.value = e.target.value.replace(/\D/g, '').slice(0, CONFIG.PIN_LENGTH);
 });
 
-$('#pin-form').addEventListener('submit', async (e) => {
+// Langkah 1: pemilik membuat PIN sendiri (tidak ada verifikasi server di sini).
+$('#pin-form').addEventListener('submit', (e) => {
   e.preventDefault();
   const pin = $('#pin').value.trim();
+  const pin2 = ($('#pin2')?.value || '').trim();
   const err = $('#pin-error');
   err.textContent = '';
   if (pin.length !== CONFIG.PIN_LENGTH) { err.textContent = `PIN terdiri dari ${CONFIG.PIN_LENGTH} angka.`; return; }
-
-  const btn = $('#pin-next');
-  busy(btn, true, 'Memeriksa…');
-  try {
-    await db.verifyOwner(code, pin); // cek PIN lebih awal supaya salah PIN ketahuan di langkah 1
-    state.pin = pin;
-    goStep('search');
-    picker.focus();
-  } catch (e2) {
-    err.textContent = friendlyError(e2);
-  } finally {
-    busy(btn, false);
-  }
+  if (pin2 !== pin) { err.textContent = 'Ulangi PIN belum sama.'; return; }
+  state.pin = pin;
+  goStep('search');
+  picker.focus();
 });
 
 $('#search-back').addEventListener('click', () => goStep('pin'));
@@ -132,9 +128,9 @@ $('#confirm-yes').addEventListener('click', async () => {
   const btn = $('#confirm-yes');
   const err = $('#confirm-error');
   err.textContent = '';
-  busy(btn, true, 'Mengaktifkan…');
+  busy(btn, true, 'Mengaktifkan...');
   try {
-    const card = await db.activateCard({ code, pin: state.pin, place: state.place });
+    const card = await db.claimCard({ code, pin: state.pin, place: state.place });
     $('#done-name').textContent = card.businessName;
     $('#done-test').href = card.reviewUrl;
     $('#done-manage').href = `/kelola.html?c=${encodeURIComponent(code)}`;

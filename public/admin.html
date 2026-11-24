@@ -69,7 +69,7 @@
         <span class="cardhead-ic" aria-hidden="true"><svg class="ic"><use href="/assets/icons.svg#qr-code"></use></svg></span>
         <h2>Buat batch kartu baru</h2>
       </div>
-      <p class="muted" style="margin:0">PIN dibuat otomatis dan hanya ditampilkan sekali. Unduh CSV-nya sebelum menutup halaman.</p>
+      <p class="muted" style="margin:0">Kartu dibuat tanpa PIN. Pemilik yang membuat PIN sendiri saat aktivasi pertama. Unduh CSV-nya untuk mencetak QR / mengisi chip NFC.</p>
       <form id="gen-form" novalidate class="row form-row">
         <div>
           <label class="label" for="g-count">Jumlah</label>
@@ -84,8 +84,8 @@
       <p class="field-error" id="g-error" role="alert"></p>
       <div id="g-result" class="note stack" hidden>
         <strong id="g-result-text"></strong>
-        <p style="margin:0">Unduh CSV-nya sekarang untuk mengisi chip NFC dan mencetak PIN. Setelah halaman ini ditutup, PIN tidak bisa dilihat lagi.</p>
-        <button id="g-download" type="button" class="btn btn-primary">Unduh CSV (kode, URL, PIN)</button>
+        <p style="margin:0">Unduh CSV-nya sekarang untuk mengisi chip NFC dan mencetak kartu.</p>
+        <button id="g-download" type="button" class="btn btn-primary">Unduh CSV (kode, URL)</button>
       </div>
     </div>
 
@@ -95,8 +95,8 @@
         <h2>Reset PIN</h2>
       </div>
       <p class="muted" style="margin:0">
-        PIN cuma disimpan sebagai hash, jadi kalau hilang harus direset.
-        <strong>PIN lama langsung tidak berlaku</strong>, termasuk yang sudah dicetak.
+        Pemulihan kalau pemilik lupa PIN-nya. PIN cuma disimpan sebagai hash, jadi harus direset.
+        <strong>PIN lama langsung tidak berlaku.</strong> Hanya berlaku untuk kartu yang sudah diaktifkan.
       </p>
       <form id="reset-form" novalidate class="row form-row">
         <div class="grow">

@@ -120,8 +120,11 @@ export function mountDemoBar() {
 // Pesan error ramah untuk pengguna awam (tanpa istilah teknis).
 export function friendlyError(err) {
   switch (err?.code) {
-    case 'wrong-pin': return 'PIN salah. Cek lagi angka di bagian belakang kartu.';
+    case 'wrong-pin': return 'PIN salah. Coba lagi ya.';
     case 'locked': return 'Terlalu banyak percobaan. Coba lagi 15 menit lagi.';
+    case 'unclaimed': return 'Kartu ini belum diaktifkan. Scan lagi untuk mengaktifkannya.';
+    case 'already-claimed': return 'Kartu ini sudah diaktifkan. Buka menu Kelola kartu untuk mengubahnya.';
+    case 'invalid-pin': return `PIN harus ${CONFIG.PIN_LENGTH} angka.`;
     case 'not-found': return 'Kartu tidak ditemukan.';
     case 'blocked': return 'Kartu ini dinonaktifkan. Silakan hubungi kami.';
     case 'already-active': return 'Kartu ini sudah aktif. Gunakan menu Kelola kartu untuk mengubahnya.';

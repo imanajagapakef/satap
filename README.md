@@ -40,6 +40,9 @@ supabase/
     0005_scan_rate_limit.sql     (dibatalkan oleh 0006)
     0006_simple_scan_count.sql   hitung tap apa adanya
     0007_verify_place_id.sql     verifikasi Place ID ke Google + private_config
+    0008_reset_pins.sql          reset PIN (admin)
+    0009_resilient_place_check.sql  verifikasi Place ID yang tahan banting
+    0010_claim_card.sql          PIN dibuat pemilik saat aktivasi (klaim kartu)
 ```
 
 ## 1. Coba sekarang (mode demo, tanpa server)
@@ -52,7 +55,7 @@ python -m http.server 3000 --directory public     # atau: npx serve public
 
 | Halaman | URL | Data demo |
 |---|---|---|
-| Aktivasi | `/c.html?c=DEMO01` | PIN `123456` |
+| Aktivasi | `/c.html?c=DEMO01` | kartu belum diklaim (buat PIN sendiri) |
 | Redirect | `/c.html?c=DEMO02` | kartu aktif (Kopi Senja) |
 | Kelola | `/kelola.html` | `DEMO02` / `654321` |
 | Admin | `/admin.html` | sandi `admin` |
@@ -69,13 +72,15 @@ Semua tulis & cek PIN lewat **RPC Postgres `security definer`**. Client tidak pe
 |---|---|---|
 | `public_card(code)` | anon | baca 1 kartu |
 | `verify_owner(code,pin)` | anon | cek PIN pemilik |
-| `activate_card(...)` | anon | aktivasi kartu (verifikasi Place ID dulu) |
+| `claim_card(code,pin,...)` | anon | aktivasi pertama: pemilik membuat PIN + pilih toko (verifikasi Place ID dulu) |
 | `update_target(...)` | anon | ganti bisnis tujuan (verifikasi Place ID dulu) |
 | `track_scan(code)` | anon | hitung tap (hanya kartu aktif) |
-| `generate_batch(count,label)` | admin | buat batch kartu + PIN |
+| `generate_batch(count,label)` | admin | buat batch kartu (tanpa PIN) |
+| `reset_card_pins(...)` | admin | reset PIN untuk pemulihan (hanya kartu yang sudah diklaim) |
 | `set_card_blocked(code,bool)` | admin | blokir / buka blokir |
 
 - PIN disimpan sebagai **bcrypt** (`pgcrypto`) di `card_secrets` — tabel tanpa RLS policy = tertutup total untuk client.
+- PIN **dibuat pemilik** saat aktivasi pertama (klaim). Kartu baru ditandai `pin_set = false` sampai diklaim.
 - Lockout 15 menit setelah 5 kali PIN salah.
 - URL ulasan dibuat **di server** dari Place ID.
 - **Place ID diverifikasi ke Google Places (Details)** lewat `places_lookup()`. Nama & alamat yang disimpan diambil dari Google, bukan dari client.
@@ -102,10 +107,12 @@ Semua tulis & cek PIN lewat **RPC Postgres `security definer`**. Client tidak pe
    insert into public.admins (user_id)
    select id from auth.users where email = 'email-anda@contoh.com';
    ```
-5. Buka `/admin`, buat batch, **unduh CSV (kode, URL, PIN)** — PIN hanya tampil sekali.
-   Kalau CSV-nya hilang, pakai bagian **Reset PIN** di halaman admin (per batch atau per kartu):
-   PIN baru dibuat dan ditampilkan sekali lagi, PIN lama langsung tidak berlaku.
-   > Buka CSV-nya pakai Notepad / import-as-text, karena PIN bisa mulai dengan angka 0.
+5. Buka `/admin`, buat batch, **unduh CSV (kode, URL)** untuk mencetak QR / mengisi chip NFC.
+   PIN **tidak** dibuat admin — pemilik membuatnya sendiri saat aktivasi pertama kartu.
+   Kalau pemilik lupa PIN, pakai bagian **Reset PIN** di halaman admin (per batch atau per kartu)
+   sebagai pemulihan: PIN baru dibuat dan ditampilkan sekali, PIN lama langsung tidak berlaku.
+   > Reset PIN hanya berlaku untuk kartu yang sudah diaktifkan.
+   > Buka CSV-nya pakai Notepad / import-as-text.
 6. **Key untuk verifikasi server**: `places_lookup()` memanggil Google dari dalam Postgres,
    jadi butuh key yang **tidak** dibatasi HTTP referrer. Isi lewat SQL Editor:
    ```sql
@@ -180,7 +187,7 @@ tidak ada di Google **tetap ditolak**.
 
 - Kode kartu acak 6 karakter (tanpa 0/O/1/I), bukan berurutan. URL kartu: `https://domain-anda.com/c/X7KP2Q`.
 - **Chip NFC dan QR code berisi URL yang sama persis.**
-- PIN 6 angka dicetak di belakang kartu: dipakai untuk aktivasi dan ganti bisnis.
+- PIN 6 angka **dibuat pemilik** saat aktivasi pertama (klaim kartu): dipakai untuk kelola & ganti bisnis. Admin bisa reset untuk pemulihan.
 - Kartu **aktif** ditangani `src/worker.js`: satu request ke Supabase lalu `302` ke
   `https://search.google.com/local/writereview?placeid=...`. Tidak ada JS di HP pelanggan.
 - Kartu **belum aktif** disajikan halaman `/c` (aktivasi) tanpa mengubah URL, jadi `c.html`

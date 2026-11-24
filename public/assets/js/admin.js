@@ -173,19 +173,25 @@ $('#gen-form').addEventListener('submit', async (e) => {
 
 // Simpan hasil (untuk CSV) dan tampilkan di kotak hasil.
 function showPins(boxEl, textEl, label, made, text) {
-  lastBatch = { label, rows: made.map((m) => ({ code: m.code, url: cardUrl(m.code), pin: m.pin })) };
+  lastBatch = { label, rows: made.map((m) => ({ code: m.code, url: cardUrl(m.code), pin: m.pin || '' })) };
   textEl.textContent = text;
   boxEl.hidden = false;
 }
 
 function downloadLastBatch() {
   if (!lastBatch) return;
+  const withPin = lastBatch.rows.some((r) => r.pin);
+  const headers = withPin ? ['no', 'kode', 'url', 'pin'] : ['no', 'kode', 'url'];
   const slug = (lastBatch.label || 'batch').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'batch';
   download(
     `satap-${slug}-${stamp()}.csv`,
-    ['no', 'kode', 'url', 'pin'],
-    lastBatch.rows.map((r, i) => [i + 1, r.code, r.url, r.pin]),
-    { text: ['pin'] }
+    headers,
+    lastBatch.rows.map((r, i) => {
+      const row = [i + 1, r.code, r.url];
+      if (withPin) row.push(r.pin);
+      return row;
+    }),
+    { text: withPin ? ['pin'] : [] }
   );
 }
 

@@ -77,12 +77,17 @@ async function sha256(text) {
 // ============================================================
 //  1) DEMO (localStorage)
 // ============================================================
-const KEY = 'ulasin_demo_v1';
+const KEY = 'ulasin_demo_v2';
 const DEMO_ACTIVE = { placeId: 'DEMO_PLACE_2', name: 'Kopi Senja', address: 'Jl. Dago No. 45, Bandung' };
 
-async function makeCard(code, pin, extra = {}) {
+// Kartu lahir tanpa PIN (pinSet:false) -> aktivasi pertama = klaim.
+async function makeCard(code, extra = {}) {
+  return { code, status: 'inactive', salt: '', pinHash: '', pinSet: false, scanCount: 0, createdAt: Date.now(), ...extra };
+}
+// Demo: kartu yang sudah diklaim (pelanggan sudah membuat PIN).
+async function withPin(card, pin) {
   const salt = randomSalt();
-  return { code, status: 'inactive', salt, pinHash: await sha256(salt + pin), scanCount: 0, createdAt: Date.now(), ...extra };
+  return { ...card, salt, pinHash: await sha256(salt + String(pin)), pinSet: true };
 }
 
 async function read() {
@@ -91,11 +96,14 @@ async function read() {
     if (raw) return JSON.parse(raw);
   } catch { /* data rusak -> seed ulang */ }
   const s = { cards: {} };
-  s.cards.DEMO01 = await makeCard('DEMO01', '123456');
-  s.cards.DEMO02 = await makeCard('DEMO02', '654321', {
-    status: 'active', ...placeFields(DEMO_ACTIVE),
-    scanCount: 87, activatedAt: Date.now() - 864e5 * 3, lastScanAt: Date.now() - 36e5,
-  });
+  s.cards.DEMO01 = await makeCard('DEMO01'); // belum diklaim -> alur klaim
+  s.cards.DEMO02 = await withPin(
+    await makeCard('DEMO02', {
+      status: 'active', ...placeFields(DEMO_ACTIVE),
+      scanCount: 87, activatedAt: Date.now() - 864e5 * 3, lastScanAt: Date.now() - 36e5,
+    }),
+    '654321'
+  );
   write(s);
   return s;
 }
@@ -109,6 +117,7 @@ function need(s, code) {
 }
 async function checkPin(c, pin) {
   if (c.status === 'blocked') throw new SatapError('blocked');
+  if (!c.pinSet) throw new SatapError('unclaimed');
   if ((await sha256(c.salt + String(pin))) !== c.pinHash) throw new SatapError('wrong-pin');
 }
 
@@ -134,14 +143,19 @@ const demo = {
     await checkPin(c, pin);
     return ownerView(c);
   },
-  async activateCard({ code, pin, place }) {
+  async claimCard({ code, pin, place }) {
     await sleep(400);
     const s = await read();
     const c = need(s, code);
-    await checkPin(c, pin);
-    if (c.status === 'active') throw new SatapError('already-active');
+    if (c.status === 'blocked') throw new SatapError('blocked');
+    if (c.pinSet) throw new SatapError('already-claimed');
+    if (!/^\d{4,12}$/.test(String(pin || ''))) throw new SatapError('invalid-pin');
     if (!okPlace(place)) throw new SatapError('invalid');
-    Object.assign(c, placeFields(place), { status: 'active', activatedAt: Date.now() });
+    const salt = randomSalt();
+    Object.assign(c, placeFields(place), {
+      salt, pinHash: await sha256(salt + String(pin)), pinSet: true,
+      status: 'active', activatedAt: Date.now(),
+    });
     write(s);
     return ownerView(c);
   },
@@ -177,9 +191,8 @@ const demo = {
     while (out.length < n) {
       const code = randomCode();
       if (s.cards[code]) continue;
-      const pin = randomPin();
-      s.cards[code] = await makeCard(code, pin, { batch: label || '' });
-      out.push({ code, pin });
+      s.cards[code] = await makeCard(code, { batch: label || '' });
+      out.push({ code });
     }
     write(s);
     return out;
@@ -187,7 +200,7 @@ const demo = {
   async adminResetPins({ codes = null, batch = null }) {
     const s = await read();
     const list = Object.values(s.cards).filter((c) =>
-      codes && codes.length ? codes.includes(c.code) : batch ? c.batch === batch : false
+      c.pinSet && (codes && codes.length ? codes.includes(c.code) : batch ? c.batch === batch : false)
     );
     if (!list.length) throw new SatapError('not-found');
     const out = [];
@@ -195,6 +208,7 @@ const demo = {
       const pin = randomPin();
       c.salt = randomSalt();
       c.pinHash = await sha256(c.salt + pin);
+      c.pinSet = true;
       out.push({ code: c.code, pin });
     }
     write(s);
@@ -211,7 +225,7 @@ const demo = {
 // ============================================================
 //  2) REAL (Supabase)
 //  - Baca kartu publik   : RPC public_card(code)
-//  - Semua yang perlu PIN : RPC verify_owner / activate_card / update_target
+//  - Semua yang perlu PIN : RPC verify_owner / claim_card / update_target
 //  - Admin                : Supabase Auth + RPC generate_batch / set_card_blocked
 //  Definisi RPC ada di supabase/migrations/*.sql
 // ============================================================
@@ -264,8 +278,8 @@ const real = {
   trackScan: async (code) => { await rpc('track_scan', { p_code: code }); },
 
   verifyOwner: async (code, pin) => unwrap(await rpc('verify_owner', { p_code: code, p_pin: pin })),
-  activateCard: async ({ code, pin, place }) =>
-    unwrap(await rpc('activate_card', {
+  claimCard: async ({ code, pin, place }) =>
+    unwrap(await rpc('claim_card', {
       p_code: code, p_pin: pin,
       p_place_id: place?.placeId, p_name: place?.name, p_address: place?.address || '',
     })),
