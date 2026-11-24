@@ -43,7 +43,8 @@
         <p class="field-error" id="login-error" role="alert"></p>
         <button class="btn btn-primary btn-block" id="login-btn" type="submit">Masuk</button>
       </form>
-      <p class="hint" data-demo-only hidden>Demo: DEMO01 / 123456 (belum aktif) · DEMO02 / 654321 (aktif)</p>
+      <p class="hint auth-help">Lupa PIN? <a id="login-help" href="#" target="_blank" rel="noopener">Hubungi kami</a></p>
+      <p class="hint" data-demo-only hidden>Demo: DEMO02 / 654321 (kartu aktif). Kartu DEMO01 belum diaktifkan, jadi belum punya PIN.</p>
     </div>
     <p class="auth-foot"><a href="/">Kembali ke beranda</a></p>
   </section>
@@ -102,6 +103,27 @@
         <p class="muted small" style="margin:0">Alamat yang tertulis di chip NFC dan QR code kartu.</p>
         <code class="codebox" id="d-cardurl"></code>
         <button id="d-copy-card" class="btn btn-ghost btn-block" type="button">Salin link kartu</button>
+      </div>
+
+      <div class="card stack">
+        <div class="cardhead">
+          <span class="cardhead-ic" aria-hidden="true"><svg class="ic"><use href="/assets/icons.svg#compass"></use></svg></span>
+          <h2>Tips pemakaian</h2>
+        </div>
+        <div class="faq">
+          <details>
+            <summary>Taruh di meja kasir</summary>
+            <p>Pelanggan cukup menempelkan HP (NFC) atau memindai QR di kartu.</p>
+          </details>
+          <details>
+            <summary>Tidak perlu aplikasi</summary>
+            <p>HP langsung membuka formulir ulasan Google toko Anda di browser.</p>
+          </details>
+          <details>
+            <summary>Ganti toko kapan saja</summary>
+            <p>Kalau pindah cabang atau ganti nama, pakai tombol "Ganti bisnis". Kartunya tetap sama.</p>
+          </details>
+        </div>
       </div>
     </div>
 

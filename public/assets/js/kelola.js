@@ -38,7 +38,7 @@ function renderDash() {
 
   if (card.status === 'active') {
     $('#d-scans').textContent = fmtNum(card.scanCount);
-    $('#d-last').textContent = card.lastScanAt ? `Terakhir di-tap: ${fmtDate(card.lastScanAt)}` : 'Belum ada yang tap.';
+    $('#d-last').textContent = card.lastScanAt ? `Terakhir di-tap: ${fmtDate(card.lastScanAt)}` : 'Belum ada tap — taruh kartu di meja kasir.';
     $('#d-biz').innerHTML = bizHtml(card.businessName, card.address);
     $('#d-test').href = card.reviewUrl;
     $('#d-cardurl').textContent = cardUrl(card.code);
@@ -65,6 +65,14 @@ function logout() {
 
 $('#login-code').addEventListener('input', (e) => { e.target.value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, ''); });
 $('#login-pin').addEventListener('input', (e) => { e.target.value = e.target.value.replace(/\D/g, '').slice(0, CONFIG.PIN_LENGTH); });
+
+// "Lupa PIN?" -> WhatsApp dengan kode kartu yang sedang diisi
+function refreshHelp() {
+  const el = $('#login-help');
+  if (el) el.href = waHelp($('#login-code').value.trim());
+}
+$('#login-code').addEventListener('input', refreshHelp);
+refreshHelp();
 
 $('#login-form').addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -136,6 +144,7 @@ $('#c-yes').addEventListener('click', async () => {
 (async function boot() {
   const fromUrl = getCodeFromUrl();
   if (fromUrl) $('#login-code').value = fromUrl;
+  refreshHelp();
 
   let saved = null;
   try { saved = JSON.parse(sessionStorage.getItem(SKEY) || 'null'); } catch { /* abaikan */ }
