@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#F7F5EF">
   <title>Satap · Satu tap, langsung ke ulasan Google toko Anda</title>
-  <meta name="description" content="Kartu NFC yang sekali ditempel langsung membuka formulir ulasan Google toko Anda. Tanpa aplikasi, tanpa login untuk pelanggan. Rp50.000 sekali bayar.">
+  <meta name="description" content="Kartu NFC yang sekali ditempel langsung membuka formulir ulasan Google toko Anda. Tanpa aplikasi, tanpa login untuk pelanggan. Rp35.000 sekali bayar.">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="id_ID">
   <meta property="og:site_name" content="Satap">
   <meta property="og:title" content="Satap · Satu tap, langsung ke ulasan Google toko Anda">
-  <meta property="og:description" content="Kartu NFC + QR untuk meja kasir. Pelanggan tap, formulir ulasan Google terbuka. Rp50.000 sekali bayar, tanpa langganan.">
+  <meta property="og:description" content="Kartu NFC + QR untuk meja kasir. Pelanggan tap, formulir ulasan Google terbuka. Rp35.000 sekali bayar, tanpa langganan.">
   <meta name="twitter:card" content="summary">
   <link rel="icon" href="/assets/logo-1x1.png" type="image/png" sizes="256x256">
   <link rel="apple-touch-icon" href="/assets/icon-180.png">
@@ -20,12 +20,16 @@
   <link rel="stylesheet" href="/assets/css/style.css">
   <link rel="stylesheet" href="/assets/css/upgrade.css">
 
+  <!-- Brand intro (landing): kritikal anti-flash — sekali per sesi, hormati reduced-motion -->
+  <style>#intro{display:none}html[data-intro="on"] #intro{display:grid;position:fixed;inset:0;z-index:100;background:#F7F5EF;place-items:center}</style>
+  <script>try{var r=document.documentElement;if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&!sessionStorage.getItem('satap_intro')){sessionStorage.setItem('satap_intro','1');r.dataset.intro='on'}}catch(e){}</script>
+
   <script type="application/ld+json">
   {
     "@context":"https://schema.org",
     "@graph":[
       {"@type":"Product","name":"Kartu Satap (NFC + QR)","description":"Kartu NFC dan QR yang membuka formulir ulasan Google toko Anda dengan satu tap.","brand":{"@type":"Brand","name":"Satap"},
-       "offers":{"@type":"Offer","price":"50000","priceCurrency":"IDR"}},
+       "offers":{"@type":"Offer","price":"35000","priceCurrency":"IDR"}},
       {"@type":"FAQPage","mainEntity":[
         {"@type":"Question","name":"Pelanggan perlu unduh aplikasi?","acceptedAnswer":{"@type":"Answer","text":"Tidak. Kartu NFC hanya berisi tautan. HP yang menempel akan membuka browser seperti membuka link biasa."}},
         {"@type":"Question","name":"HP pelanggan tidak ada NFC-nya?","acceptedAnswer":{"@type":"Answer","text":"Setiap kartu punya QR code. Pelanggan tinggal memindai QR tersebut dan hasilnya sama."}},
@@ -36,6 +40,7 @@
   </script>
 </head>
 <body>
+<div id="intro" aria-hidden="true"><div class="intro-mark"><img src="/assets/logo.png" alt="" width="46" height="46"></div></div>
 <main class="shell shell-wide">
 
   <header class="topbar" id="topbar">
@@ -63,7 +68,7 @@
         <a class="btn btn-ghost" href="#cara">Lihat cara kerjanya</a>
       </div>
       <ul class="hero-points">
-        <li>Rp50.000, sekali bayar</li>
+        <li>Rp35.000, sekali bayar</li>
         <li>Tanpa biaya bulanan</li>
         <li>QR untuk HP tanpa NFC</li>
       </ul>
@@ -195,7 +200,7 @@
 
   <!-- STRIP -->
   <div class="strip" role="list">
-    <div role="listitem"><b>Rp50.000</b><span>Sekali bayar</span></div>
+    <div role="listitem"><b><s class="price-was">Rp50.000</s> Rp35.000</b><span>Sekali bayar</span></div>
     <div role="listitem"><b>Tanpa aplikasi</b><span>Pelanggan tidak perlu unduh</span></div>
     <div role="listitem"><b>NFC + QR</b><span>Dalam satu kartu</span></div>
     <div role="listitem"><b>Ganti kapan saja</b><span>Pindah cabang, kartunya tetap</span></div>
@@ -249,7 +254,7 @@
       <div class="feature">
         <span class="num">1</span>
         <h3>Aktifkan kartunya</h3>
-        <p>Tap satu kali, masukkan PIN 6 angka di belakang kartu, lalu pilih nama toko Anda dari Google Maps.</p>
+        <p>Tap satu kali, buat PIN 6 angka sendiri, lalu pilih nama toko Anda dari Google Maps.</p>
       </div>
       <div class="feature">
         <span class="num">2</span>
@@ -349,12 +354,10 @@
   <!-- CTA -->
   <section class="cta-band" id="pesan">
     <h2>Siap punya kartu Satap?</h2>
-    <p class="muted" style="max-width:52ch;margin:10px auto 0">
-      Ceritakan usaha Anda, kami bantu atur kartunya sampai jalan. Rp50.000, sekali bayar.
-    </p>
-    <div class="row">
-      <a class="btn btn-primary" data-wa="order" target="_blank" rel="noopener" href="#">Chat kami di WhatsApp</a>
-      <a class="btn btn-ghost" href="/harga.html">Lihat detail harga</a>
+    <p class="cta-lead">Ceritakan usaha Anda, kami bantu atur kartunya sampai jalan. <strong>Rp35.000</strong>, sekali bayar.</p>
+    <div class="cta-actions">
+      <a class="btn btn-primary" data-wa="order" target="_blank" rel="noopener" href="#"><svg class="ic" aria-hidden="true"><use href="/assets/icons.svg#message-circle"></use></svg>Chat kami di WhatsApp</a>
+      <a class="btn btn-ghost" href="/harga.html">Lihat detail harga<svg class="ic" aria-hidden="true"><use href="/assets/icons.svg#arrow-right"></use></svg></a>
     </div>
   </section>
 
@@ -371,12 +374,23 @@
 
 <!-- CTA lengket (hanya tampil di HP) -->
 <div class="sticky-cta" id="sticky-cta">
-  <a class="btn btn-primary" data-wa="order" target="_blank" rel="noopener" href="#">Pesan kartu · Rp50.000</a>
+  <a class="btn btn-primary" data-wa="order" target="_blank" rel="noopener" href="#">Pesan kartu · Rp35.000</a>
 </div>
 
 <script type="module" src="/assets/js/landing.js"></script>
 <script>
 (function(){
+  /* Brand intro: buang overlay setelah animasi selesai (atau sebagai cadangan) */
+  var intro = document.getElementById('intro');
+  if (intro) {
+    var introDone = function(){ if (intro && intro.parentNode) intro.parentNode.removeChild(intro); };
+    if (document.documentElement.dataset.intro === 'on') {
+      intro.addEventListener('animationend', function(e){ if (e.animationName === 'introOut') introDone(); });
+      intro.addEventListener('click', introDone);
+      setTimeout(introDone, 1200);
+    } else { introDone(); }
+  }
+
   var top = document.getElementById('topbar');
   if (top) addEventListener('scroll', function(){ top.classList.toggle('is-scrolled', scrollY > 8); }, {passive:true});
 

@@ -184,6 +184,9 @@ select.input { padding-right: 12px; }
 .auth-badge .ic { width: 22px; height: 22px; }
 .auth-foot { text-align: center; margin: 18px 0 0; font-size: 14px; }
 .auth-foot a { color: var(--muted); }
+.auth-help { margin: 12px 0 0; }
+.auth-help a { color: var(--primary); font-weight: 800; text-decoration: none; }
+.auth-help a:hover { text-decoration: underline; }
 
 /* ---------- kepala panel ---------- */
 .pagehead { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
@@ -269,6 +272,7 @@ td.actions .btn + .btn { margin-left: 6px; }
 .plan .plan-for { color: var(--muted); font-size: 14px; margin: 0 0 10px; }
 .plan-price { font-size: 36px; font-weight: 800; color: var(--primary); line-height: 1.1; }
 .plan-price small { display: block; font-family: 'Nunito', system-ui, sans-serif; font-size: 14px; color: var(--muted); font-weight: 700; }
+.price-was { color: var(--muted); text-decoration: line-through; text-decoration-thickness: 2px; font-weight: 700; margin-right: .12em; }
 .plan ul { list-style: none; padding: 0; margin: 16px 0 20px; display: grid; gap: 9px; font-size: 15px; }
 .plan li { display: flex; gap: 10px; align-items: flex-start; }
 .plan li::before {
@@ -285,6 +289,21 @@ td.actions .btn + .btn { margin-left: 6px; }
 .faq summary { font-weight: 800; cursor: pointer; }
 .faq summary::marker { color: var(--primary); }
 .faq details p { margin: 10px 0 0; color: var(--muted); font-size: 15px; }
+
+/* FAQ buka/tutup yang halus (browser modern; lainnya tetap instan) */
+@supports (interpolate-size: allow-keywords) and selector(::details-content) {
+  .faq { interpolate-size: allow-keywords; }
+  .faq details::details-content {
+    block-size: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: block-size .3s ease, opacity .25s ease, content-visibility .3s allow-discrete;
+  }
+  .faq details[open]::details-content { block-size: auto; opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .faq details::details-content { transition: none; }
+}
 
 .cta-band { margin-top: 46px; padding: 28px 22px; border-radius: var(--radius); background: var(--soft); border: 1.5px dashed #D3E7B8; text-align: center; }
 .cta-band h2 { margin-bottom: 0; }
